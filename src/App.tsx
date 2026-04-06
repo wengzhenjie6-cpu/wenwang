@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
+import Particles from './components/Particles';
+import ScrollFloat from './components/ScrollFloat';
 import { 
   ShoppingBag, 
   Menu, 
@@ -88,15 +90,25 @@ const InteractiveBackground = () => {
 
   return (
     <div className="fixed inset-0 z-[-1] overflow-hidden bg-wenwan-ink">
+      <Particles
+        particleColors={['#D4AF37', '#8B5A2B', '#ffffff']}
+        particleCount={200}
+        particleSpread={10}
+        speed={0.1}
+        particleBaseSize={100}
+        moveParticlesOnHover={true}
+        alphaParticles={true}
+        disableRotation={false}
+      />
       <motion.div 
-        className="absolute inset-[-10%] opacity-20"
+        className="absolute inset-[-10%] opacity-20 pointer-events-none"
         animate={{ x: mousePos.x, y: mousePos.y }}
         transition={{ type: 'tween', ease: 'linear', duration: 0.2 }}
       >
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-wenwan-gold/20 blur-[120px] rounded-full" />
-        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-wenwan-brown/30 blur-[150px] rounded-full" />
+        <div className="absolute top-1/4 left-1/4 w-[24rem] h-[24rem] bg-wenwan-gold/20 blur-[120px] rounded-full" />
+        <div className="absolute bottom-1/4 right-1/4 w-[31.25rem] h-[31.25rem] bg-wenwan-brown/30 blur-[150px] rounded-full" />
       </motion.div>
-      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')] opacity-10 mix-blend-overlay" />
+      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')] opacity-10 mix-blend-overlay pointer-events-none" />
     </div>
   );
 };
@@ -144,22 +156,6 @@ const ScrollToTop = () => {
 
 // --- Components ---
 
-const BackToHome = () => (
-  <motion.div
-    initial={{ opacity: 0, x: -20 }}
-    animate={{ opacity: 1, x: 0 }}
-    transition={{ duration: 0.5, ease: "easeOut" }}
-    className="fixed top-8 left-8 z-[100]"
-  >
-    <Link 
-      to="/" 
-      className="flex items-center space-x-3 bg-wenwan-ink/80 backdrop-blur-md text-white px-6 py-3 rounded-full border border-white/10 hover:bg-wenwan-gold hover:border-wenwan-gold transition-all duration-500 group shadow-2xl"
-    >
-      <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-      <span className="font-serif tracking-[0.2em] text-xs font-bold uppercase">返回主馆</span>
-    </Link>
-  </motion.div>
-);
 
 const ExpandableSection = ({ title, items }: { title: string, items: { title: string, desc: string, img: string }[] }) => {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
@@ -215,6 +211,9 @@ const Navbar = () => {
     height: typeof window !== 'undefined' ? window.innerHeight : 800
   });
   const { scrollY } = useScroll();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isHome = location.pathname === '/';
   const logoRef = React.useRef<HTMLDivElement>(null);
   const [actualLogoWidth, setActualLogoWidth] = useState(200);
   
@@ -235,6 +234,17 @@ const Navbar = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   // 10-step equivalent fluid easing (easeInOutCubic) for maximum smoothness
   // Sync the animation to complete exactly when the hero section (100vh) is fully covered
   const progress = useTransform(scrollY, (y) => {
@@ -247,7 +257,7 @@ const Navbar = () => {
   // Initial position is right-12 (48px from right)
   const xOffset = useTransform(progress, (p) => p * -(windowSize.width / 2 - 48 - actualLogoWidth / 2));
   const logoScale = useTransform(progress, (p) => 1 - 0.2 * p); 
-  const logoColor = useTransform(scrollY, [0, 100], ["#ffffff", "#D4AF37"]);
+  const logoColor = useTransform(scrollY, [0, 100], [isHome ? "#ffffff" : "#2A241F", "#D4AF37"]);
 
   // Light effect tracking the 10-step progression
   const lightOffset = useTransform(progress, (p) => {
@@ -262,58 +272,121 @@ const Navbar = () => {
   });
 
   return (
-    <nav className={cn(
-      "fixed top-0 w-full z-[100] transition-all duration-700",
-      scrolled ? "bg-wenwan-ink/90 backdrop-blur-md py-2 shadow-2xl" : "bg-transparent py-8"
-    )}>
-      {/* Converging Light Effects */}
-      <motion.div 
-        className="absolute bottom-0 h-[2px] bg-gradient-to-r from-transparent via-wenwan-gold/50 to-wenwan-gold shadow-[0_0_15px_rgba(212,175,55,0.8)]"
-        style={{ left: 0, width: '150px', x: lightOffset, opacity: lightOpacity }}
-      />
-      <motion.div 
-        className="absolute bottom-0 h-[2px] bg-gradient-to-l from-transparent via-wenwan-gold/50 to-wenwan-gold shadow-[0_0_15px_rgba(212,175,55,0.8)]"
-        style={{ right: 0, width: '150px', x: rightLightOffset, opacity: lightOpacity }}
-      />
-
-      <div className="w-full px-12 flex justify-end items-center relative h-full">
-        {/* Animated Logo & Name */}
-        <motion.div 
-          ref={logoRef}
-          style={{ x: xOffset, scale: logoScale }}
-          className="flex items-center space-x-4 cursor-pointer group relative z-10"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        >
+    <>
+      {!isOpen && (
+        <nav className={cn(
+          "fixed top-0 w-full z-[100] transition-all duration-700",
+          scrolled ? "bg-wenwan-ink/90 backdrop-blur-md py-2 shadow-2xl" : "bg-transparent py-8"
+        )}>
+          {/* Converging Light Effects */}
           <motion.div 
-            style={{ borderColor: logoColor, color: logoColor }}
-            className={cn(
-              "w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all duration-500",
-              !scrolled && "border-white text-white group-hover:border-wenwan-gold group-hover:text-wenwan-gold"
-            )}
-          >
-            <Flower2 size={24} />
-          </motion.div>
-          <motion.span 
-            style={{ color: logoColor }}
-            className={cn(
-              "text-2xl font-bold tracking-[0.4em] transition-all duration-500 font-serif whitespace-nowrap",
-              !scrolled && "text-white group-hover:text-wenwan-gold"
-            )}
-          >
-            文玩馆
-          </motion.span>
-        </motion.div>
+            className="absolute bottom-0 h-[2px] bg-gradient-to-r from-transparent via-wenwan-gold/50 to-wenwan-gold shadow-[0_0_15px_rgba(212,175,55,0.8)]"
+            style={{ left: 0, width: '9.375rem', x: lightOffset, opacity: lightOpacity }}
+          />
+          <motion.div 
+            className="absolute bottom-0 h-[2px] bg-gradient-to-l from-transparent via-wenwan-gold/50 to-wenwan-gold shadow-[0_0_15px_rgba(212,175,55,0.8)]"
+            style={{ right: 0, width: '9.375rem', x: rightLightOffset, opacity: lightOpacity }}
+          />
 
-        {/* Mobile Toggle */}
-        <div className="md:hidden ml-8 relative z-10">
-          <button 
-            onClick={() => setIsOpen(!isOpen)}
-            className="text-white hover:text-wenwan-gold transition-colors"
-          >
-            {isOpen ? <X size={32} /> : <Menu size={32} />}
-          </button>
-        </div>
-      </div>
+          <div className="w-full px-12 flex justify-between items-center relative h-full">
+            {/* Dynamic Left Action Button */}
+            <button 
+              onClick={() => {
+                if (!scrolled) {
+                  if (!isHome) navigate('/');
+                } else {
+                  const startPosition = window.scrollY;
+                  const startTime = performance.now();
+                  const duration = 1500; // 1.5s
+
+                  const animateScroll = (currentTime: number) => {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    
+                    // easeInOutCubic
+                    const ease = progress < 0.5 
+                      ? 4 * progress * progress * progress 
+                      : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+                  window.scrollTo(0, startPosition * (1 - ease));
+
+                    if (progress < 1) {
+                      requestAnimationFrame(animateScroll);
+                    }
+                  };
+
+                  requestAnimationFrame(animateScroll);
+                }
+              }}
+              className={cn(
+                "hover:text-wenwan-gold transition-all duration-700 z-10 flex items-center relative",
+                scrolled ? "text-white" : (isHome ? "text-white" : "text-wenwan-ink"),
+                isHome && !scrolled ? "opacity-0 pointer-events-none" : "opacity-100"
+              )}
+            >
+              <ArrowLeft 
+                size={32} 
+                className={cn(
+                  "transition-transform duration-700", 
+                  scrolled ? "rotate-90" : "rotate-0"
+                )} 
+              />
+              <span className={cn(
+                "absolute left-10 text-lg font-serif tracking-widest hidden md:block whitespace-nowrap transition-all duration-700",
+                !scrolled ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 pointer-events-none"
+              )}>
+                返回首页
+              </span>
+            </button>
+            
+            {/* Animated Logo & Name */}
+            <motion.div 
+              ref={logoRef}
+              style={{ x: scrolled ? 0 : (isHome ? xOffset : 0), scale: logoScale }}
+              className={cn(
+                "flex items-center space-x-4 cursor-pointer group relative z-10",
+                isOpen && "invisible",
+                scrolled ? "absolute left-1/2 -translate-x-1/2" : "ml-auto"
+              )}
+              onClick={() => navigate('/')}
+            >
+              <motion.div 
+                style={{ borderColor: logoColor, color: logoColor }}
+                className={cn(
+                  "w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all duration-500",
+                  !scrolled && isHome && "border-white text-white",
+                  "group-hover:border-wenwan-gold group-hover:text-wenwan-gold"
+                )}
+              >
+                <Flower2 size={24} />
+              </motion.div>
+              <motion.span 
+                style={{ color: logoColor }}
+                className={cn(
+                  "text-2xl font-bold tracking-[0.4em] transition-all duration-500 font-serif whitespace-nowrap",
+                  !scrolled && isHome && "text-white",
+                  "group-hover:text-wenwan-gold"
+                )}
+              >
+                文玩馆
+              </motion.span>
+            </motion.div>
+
+            {/* Mobile Toggle - Inside Nav */}
+            <div className="relative z-10">
+              <button 
+                onClick={() => setIsOpen(!isOpen)}
+                className={cn(
+                  "hover:text-wenwan-gold transition-colors",
+                  scrolled ? "text-white" : (isHome ? "text-white" : "text-wenwan-ink")
+                )}
+              >
+                <Menu size={32} />
+              </button>
+            </div>
+          </div>
+        </nav>
+      )}
       
       {/* Mobile Nav Menu */}
       <AnimatePresence>
@@ -322,18 +395,30 @@ const Navbar = () => {
             initial={{ opacity: 0, x: '100%' }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
-            className="fixed inset-0 bg-wenwan-ink z-[60] flex flex-col items-center justify-center space-y-12 md:hidden"
+            className="fixed inset-0 bg-gradient-to-b from-wenwan-ink/90 to-wenwan-ink/95 backdrop-blur-3xl z-[60] flex flex-col"
           >
-            <button onClick={() => setIsOpen(false)} className="absolute top-10 right-12 text-white">
-              <X size={48} />
-            </button>
-            <Link to="/" onClick={() => setIsOpen(false)} className="text-3xl font-serif text-white tracking-widest">首页</Link>
-            <Link to="/products" onClick={() => setIsOpen(false)} className="text-3xl font-serif text-white tracking-widest">文玩品鉴</Link>
-            <Link to="/login" onClick={() => setIsOpen(false)} className="text-3xl font-serif text-wenwan-gold tracking-widest">登录</Link>
+            {/* Backdrop for closing */}
+            <div className="absolute inset-0" onClick={() => setIsOpen(false)} />
+            
+            <div className="absolute top-10 left-12 right-12 flex justify-between items-center text-white z-10">
+              <button onClick={() => setIsOpen(false)}><ArrowLeft size={48} /></button>
+            </div>
+            <div className="flex flex-col items-center space-y-12 mt-24 overflow-y-auto w-full pb-20 z-10">
+              <span className="font-serif text-4xl tracking-widest text-white mb-8">文玩馆</span>
+              <Link to="/" onClick={() => setIsOpen(false)} className="text-3xl font-serif text-white tracking-widest">文玩首页</Link>
+              <Link to="/mall" onClick={() => setIsOpen(false)} className="text-3xl font-serif text-white tracking-widest">官方商城</Link>
+              <Link to="/login" onClick={() => setIsOpen(false)} className="text-3xl font-serif text-white tracking-widest">雅集登录</Link>
+              <Link to="/maintenance" onClick={() => setIsOpen(false)} className="text-3xl font-serif text-white tracking-widest">养护说明</Link>
+              <Link to="/support" onClick={() => setIsOpen(false)} className="text-3xl font-serif text-white tracking-widest">售后保障</Link>
+              <Link to="/categories" onClick={() => setIsOpen(false)} className="text-3xl font-serif text-white tracking-widest">菩提类</Link>
+              <Link to="/categories" onClick={() => setIsOpen(false)} className="text-3xl font-serif text-white tracking-widest">玉石类</Link>
+              <Link to="/categories" onClick={() => setIsOpen(false)} className="text-3xl font-serif text-white tracking-widest">木质类</Link>
+              <Link to="/support" onClick={() => setIsOpen(false)} className="text-3xl font-serif text-white tracking-widest">关于我们</Link>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+    </>
   );
 };
 
@@ -381,15 +466,15 @@ const Footer = () => (
             </li>
             <li className="flex items-center gap-3">
               <span className="text-wenwan-gold">电话：</span>
-              <span className="select-all">400-888-8888</span>
+              <span className="select-all">1433223</span>
             </li>
             <li className="flex items-center gap-3">
               <span className="text-wenwan-gold">邮箱：</span>
-              <span className="select-all">contact@wenwanguan.com</span>
+              <span className="select-all">ThursdayV50RNB@FKC</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="text-wenwan-gold whitespace-nowrap">地址：</span>
-              <span>北京市东城区琉璃厂古文化街88号</span>
+              <span>广东技术师范大学东校区</span>
             </li>
           </ul>
         </div>
@@ -414,7 +499,9 @@ const AppreciationLayout = ({ section }: { section: any }) => {
     <div className="bg-[#F9F6F0] py-32 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 space-y-32">
         <div className="text-center space-y-6">
-          <h2 className="text-5xl font-bold font-serif text-[#3D3229]">{section.title} · 珍品大赏</h2>
+          <ScrollFloat as="h2" containerClassName="text-5xl font-bold font-serif text-[#3D3229]">
+            {section.title + ' · 珍品大赏'}
+          </ScrollFloat>
           <p className="text-wenwan-gold tracking-[0.4em] font-bold">左图右文，细细品味每一处细节</p>
         </div>
         
@@ -433,13 +520,11 @@ const AppreciationLayout = ({ section }: { section: any }) => {
                 transition={{ duration: 0.8 }}
                 src={item.img} 
                 alt={item.title} 
-                className="w-full h-[500px] object-cover"
+                className="w-full h-[31.25rem] object-cover"
                 referrerPolicy="no-referrer"
               />
             </div>
             <div className="flex-1 space-y-8">
-              <h3 className="text-4xl font-bold font-serif text-[#3D3229]">{item.title}</h3>
-              <p className="text-xl text-[#3D3229]/70 font-serif italic">{item.sub}</p>
               <div className="w-12 h-1 bg-wenwan-gold" />
               <p className="text-[#3D3229]/60 leading-loose">
                 此件藏品历经岁月沉淀，包浆醇厚，纹理细腻。每一道刻痕都诉说着匠人的心血与专注。无论是作为投资收藏，还是日常把玩，皆为上品。其独特的材质与精湛的工艺，使其在众多文玩中脱颖而出。
@@ -463,7 +548,9 @@ const MaterialLayout = ({ section }: { section: any }) => {
       <div className="max-w-7xl mx-auto px-6 space-y-32">
         {/* Hero Section */}
         <div className="text-center space-y-6">
-          <h2 className="text-5xl font-bold font-serif text-[#3D3229]">{section.title} · 探寻自然</h2>
+          <ScrollFloat as="h2" containerClassName="text-5xl font-bold font-serif text-[#3D3229]">
+            {section.title + ' · 探寻自然'}
+          </ScrollFloat>
           <p className="text-wenwan-gold tracking-[0.4em] font-bold">{section.detailTitle}</p>
           <p className="max-w-3xl mx-auto text-[#3D3229]/70 leading-loose font-serif text-lg">
             {section.detailDesc}
@@ -496,7 +583,9 @@ const MaterialLayout = ({ section }: { section: any }) => {
         {/* Products Grid (图文显示) */}
         <div className="space-y-12">
           <div className="text-center space-y-4">
-            <h3 className="text-4xl font-bold font-serif text-[#3D3229]">精选{section.title}</h3>
+            <ScrollFloat as="h3" containerClassName="text-4xl font-bold font-serif text-[#3D3229]">
+              {'精选' + section.title}
+            </ScrollFloat>
             <div className="w-16 h-1 bg-wenwan-gold mx-auto" />
           </div>
           
@@ -556,7 +645,9 @@ const CraftsmanshipLayout = ({ section }: { section: any }) => {
           viewport={{ once: true }}
           className="text-center space-y-8"
         >
-          <h2 className="text-6xl font-bold font-serif text-[#3D3229]">{section.title}</h2>
+          <ScrollFloat as="h2" containerClassName="text-6xl font-bold font-serif text-[#3D3229]">
+            {section.title}
+          </ScrollFloat>
           <p className="text-2xl text-wenwan-gold font-serif italic">"千锤百炼，方得始终"</p>
         </motion.div>
 
@@ -624,7 +715,9 @@ const CustomizationLayout = ({ section }: { section: any }) => {
     <div className="bg-[#F9F6F0] py-32">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center space-y-6 mb-24">
-          <h2 className="text-5xl font-bold font-serif text-[#3D3229]">{section.title} · 专属体验</h2>
+          <ScrollFloat as="h2" containerClassName="text-5xl font-bold font-serif text-[#3D3229]">
+            {section.title + ' · 专属体验'}
+          </ScrollFloat>
           <p className="text-wenwan-gold tracking-[0.4em] font-bold">功能展示：打造独一无二的专属雅物</p>
         </div>
 
@@ -653,7 +746,7 @@ const CustomizationLayout = ({ section }: { section: any }) => {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
-                className="min-h-[300px] flex flex-col items-center justify-center text-center space-y-8"
+                className="min-h-[18.75rem] flex flex-col items-center justify-center text-center space-y-8"
               >
                 <div className="w-32 h-32 rounded-full bg-[#F9F6F0] flex items-center justify-center text-wenwan-gold">
                   {section.features[activeStep % section.features.length]?.icon || <Star size={48} />}
@@ -677,7 +770,7 @@ const CustomizationLayout = ({ section }: { section: any }) => {
           </div>
 
           {/* Preview Panel */}
-          <div className="w-full lg:w-[400px] bg-wenwan-ink text-white p-8 rounded-sm shadow-2xl flex flex-col">
+          <div className="w-full lg:w-[25rem] bg-wenwan-ink text-white p-8 rounded-sm shadow-2xl flex flex-col">
             <h3 className="text-2xl font-serif text-wenwan-gold mb-8 border-b border-wenwan-gold/30 pb-4">定制预览</h3>
             <div className="flex-1 flex items-center justify-center">
               <motion.div 
@@ -705,7 +798,9 @@ const ServiceLayout = ({ section }: { section: any }) => {
     <div className="bg-white py-32">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center space-y-6 mb-24">
-          <h2 className="text-5xl font-bold font-serif text-[#3D3229]">{section.title}</h2>
+          <ScrollFloat as="h2" containerClassName="text-5xl font-bold font-serif text-[#3D3229]">
+            {section.title}
+          </ScrollFloat>
           <p className="text-wenwan-gold tracking-[0.4em] font-bold">混合排版：网格优势与折叠问答</p>
         </div>
 
@@ -729,7 +824,9 @@ const ServiceLayout = ({ section }: { section: any }) => {
 
         {/* FAQ Section */}
         <div className="max-w-3xl mx-auto space-y-8">
-          <h3 className="text-3xl font-bold font-serif text-center text-[#3D3229] mb-12">常见问题解答</h3>
+          <ScrollFloat as="h3" containerClassName="text-3xl font-bold font-serif text-center text-[#3D3229] mb-12">
+            常见问题解答
+          </ScrollFloat>
           {section.knowledge.articles.map((article: string, idx: number) => (
             <details key={idx} className="group bg-[#F9F6F0] rounded-sm border border-wenwan-gold/20 [&_summary::-webkit-details-marker]:hidden">
               <summary className="flex items-center justify-between p-6 cursor-pointer font-bold text-[#3D3229] font-serif">
@@ -760,7 +857,9 @@ const LoginLayout = ({ section }: { section: any }) => {
           viewport={{ once: true }}
           className="flex-1 text-white space-y-12"
         >
-          <h2 className="text-6xl font-bold font-serif text-wenwan-gold">{section.title}</h2>
+          <ScrollFloat as="h2" containerClassName="text-6xl font-bold font-serif text-wenwan-gold">
+            {section.title}
+          </ScrollFloat>
           <p className="text-2xl font-serif italic text-white/80">{section.subtitle}</p>
           <p className="text-white/60 leading-loose max-w-md">
             {section.desc}
@@ -838,7 +937,7 @@ const MallPage = () => {
 
         {/* Customization */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 bg-white p-12 rounded-sm shadow-2xl">
-          <div className="bg-[#F9F6F0] rounded-sm flex items-center justify-center h-[500px] border-2 border-dashed border-wenwan-gold/30">
+          <div className="bg-[#F9F6F0] rounded-sm flex items-center justify-center h-[31.25rem] border-2 border-dashed border-wenwan-gold/30">
             <p className="text-wenwan-gold/50 font-serif tracking-widest">预留3D模型展示区域</p>
           </div>
           <div className="space-y-8">
@@ -893,7 +992,7 @@ const DefaultHomeLayout = ({ section }: { section: any }) => {
               <img 
                 src={section.detailImage} 
                 alt={section.detailTitle} 
-                className="w-full h-[600px] object-cover transition-transform duration-1000 group-hover:scale-110"
+                className="w-full h-[37.5rem] object-cover transition-transform duration-1000 group-hover:scale-110"
                 referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -925,9 +1024,9 @@ const DefaultHomeLayout = ({ section }: { section: any }) => {
             <h2 className="text-wenwan-gold font-bold tracking-[0.4em] text-sm uppercase border-b-2 border-wenwan-gold pb-2 inline-block">
               {section.subtitle} · 深度解读
             </h2>
-            <h3 className="text-5xl font-bold font-serif text-[#3D3229] leading-tight">
+            <ScrollFloat as="h3" containerClassName="text-5xl font-bold font-serif text-[#3D3229] leading-tight">
               {section.detailTitle}
-            </h3>
+            </ScrollFloat>
             <p className="text-[#3D3229]/80 text-xl leading-loose font-serif italic">
               {section.detailDesc}
             </p>
@@ -950,7 +1049,9 @@ const DefaultHomeLayout = ({ section }: { section: any }) => {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="max-w-7xl mx-auto text-center space-y-6 mb-24"
       >
-        <h2 className="text-5xl font-bold font-serif text-[#3D3229]">{section.title} · 为你提供</h2>
+        <ScrollFloat as="h2" containerClassName="text-5xl font-bold font-serif text-[#3D3229]">
+          {section.title + ' · 为你提供'}
+        </ScrollFloat>
         <p className="text-wenwan-gold tracking-[0.4em] font-bold">不只是交易，更是知识与审美的同行者</p>
       </motion.div>
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -987,7 +1088,9 @@ const DefaultHomeLayout = ({ section }: { section: any }) => {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="max-w-7xl mx-auto text-center space-y-6 mb-24"
       >
-        <h2 className="text-5xl font-bold font-serif text-[#3D3229]">{section.title}之美 · 不止于物</h2>
+        <ScrollFloat as="h2" containerClassName="text-5xl font-bold font-serif text-[#3D3229]">
+          {section.title + '之美 · 不止于物'}
+        </ScrollFloat>
         <p className="text-wenwan-gold tracking-[0.4em] font-bold">精选藏品，每一件都值得静观</p>
       </motion.div>
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -998,20 +1101,16 @@ const DefaultHomeLayout = ({ section }: { section: any }) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.8, ease: "easeOut", delay: idx * 0.1 }}
-              className="group relative h-[400px] overflow-hidden rounded-sm shadow-lg"
+              className="group relative h-[25rem] overflow-hidden rounded-sm shadow-lg"
             >
               <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" referrerPolicy="no-referrer" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-              <div className="absolute bottom-8 left-8 text-white space-y-2">
-                <h4 className="text-2xl font-bold font-serif tracking-widest">{item.title}</h4>
-                <p className="text-white/60 font-serif italic">{item.sub}</p>
-              </div>
             </motion.div>
           ))}
         </div>
         <div className="text-center mt-20">
           <Link to={section.link} className="bg-wenwan-ink text-wenwan-paper px-16 py-6 rounded-sm font-bold tracking-[0.3em] hover:bg-wenwan-gold hover:text-wenwan-ink transition-all btn-neumorphic-dark">
-            进入{section.title}，欣赏更多 →
+            深入了解 →
           </Link>
         </div>
       </section>
@@ -1025,7 +1124,9 @@ const DefaultHomeLayout = ({ section }: { section: any }) => {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="max-w-7xl mx-auto text-center space-y-6 mb-24"
       >
-        <h2 className="text-5xl font-bold font-serif text-[#3D3229]">为什么选择{section.title}</h2>
+        <ScrollFloat as="h2" containerClassName="text-5xl font-bold font-serif text-[#3D3229]">
+          {'为什么选择' + section.title}
+        </ScrollFloat>
         <p className="text-wenwan-gold tracking-[0.4em] font-bold">专业、真实、有保障</p>
       </motion.div>
         <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -1049,14 +1150,18 @@ const DefaultHomeLayout = ({ section }: { section: any }) => {
       {/* Section 6: Dynamic Knowledge Inheritance */}
       <section className="py-40 px-6 bg-[#F9F6F0]">
         <div className="max-w-7xl mx-auto text-center space-y-6 mb-24">
-          <h2 className="text-5xl font-bold font-serif text-[#3D3229]">不止于买 · 更在于传</h2>
+          <ScrollFloat as="h2" containerClassName="text-5xl font-bold font-serif text-[#3D3229]">
+            不止于买 · 更在于传
+          </ScrollFloat>
           <p className="text-wenwan-gold tracking-[0.4em] font-bold">养护知识 + 材质科普，让文玩陪伴更长久</p>
         </div>
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24">
           <div className="space-y-12">
             <div className="flex items-center gap-4 text-wenwan-ink">
               <Flower2 size={32} />
-              <h3 className="text-3xl font-bold font-serif">📖 养护指南</h3>
+              <ScrollFloat as="h3" containerClassName="text-3xl font-bold font-serif">
+                📖 养护指南
+              </ScrollFloat>
             </div>
             <div className="space-y-8">
               {section.knowledge.articles.map((text: string, idx: number) => (
@@ -1073,7 +1178,9 @@ const DefaultHomeLayout = ({ section }: { section: any }) => {
           <div className="space-y-12">
             <div className="flex items-center gap-4 text-wenwan-ink">
               <Leaf size={32} />
-              <h3 className="text-3xl font-bold font-serif">🌳 材质百科</h3>
+              <ScrollFloat as="h3" containerClassName="text-3xl font-bold font-serif">
+                🌳 材质百科
+              </ScrollFloat>
             </div>
             <div className="grid grid-cols-2 gap-8">
               {section.knowledge.categories.map((item: any, idx: number) => (
@@ -1093,11 +1200,13 @@ const DefaultHomeLayout = ({ section }: { section: any }) => {
       {/* Section 7: Dynamic Join Us */}
       <section className="py-40 px-6 bg-white text-center">
         <div className="max-w-4xl mx-auto space-y-12">
-          <h2 className="text-5xl font-bold font-serif text-[#3D3229]">与{section.title}一起，感受岁月之美</h2>
+          <ScrollFloat as="h2" containerClassName="text-5xl font-bold font-serif text-[#3D3229]">
+            {'与' + section.title + '一起，感受岁月之美'}
+          </ScrollFloat>
           <p className="text-wenwan-gold tracking-[0.4em] font-bold uppercase">关注公众号，获取每日文玩知识</p>
           <div className="flex flex-col items-center space-y-6">
             <div className="w-48 h-48 bg-[#F9F6F0] p-4 rounded-sm border border-wenwan-gold/20 shadow-inner">
-              <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=WenwanGuan" alt="QR Code" className="w-full h-full mix-blend-multiply opacity-80" />
+              <img src="https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E4%BA%8C%E7%BB%B4%E7%A0%81.jpg" alt="QR Code" className="w-full h-full mix-blend-multiply opacity-80" />
             </div>
             <p className="text-[#3D3229]/60 font-serif">微信扫一扫，关注{section.title}</p>
           </div>
@@ -1115,7 +1224,7 @@ const RotatingShouchuan = ({ activeIndex, beads, onBeadClick, onHoverChange }: {
   const positions = [-90, -60, -30, 0, 30, 60, 90];
 
   return (
-    <div className="absolute left-0 top-0 w-[700px] h-screen pointer-events-none hidden lg:block z-20">
+    <div className="absolute left-0 top-0 w-[43.75rem] h-screen pointer-events-none hidden lg:block z-20">
       <div className="relative w-full h-full">
         {positions.map((angle, posIndex) => {
           // Calculate which bead is at this position
@@ -1168,22 +1277,6 @@ const RotatingShouchuan = ({ activeIndex, beads, onBeadClick, onHoverChange }: {
               
               {/* Top Highlight Spot */}
               <div className="absolute top-[12%] left-[12%] w-12 h-12 bg-white/40 rounded-full blur-xl" />
-              
-              {/* Label */}
-              <AnimatePresence>
-                {isCenter && (
-                  <motion.div 
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="absolute bottom-6 w-full text-center"
-                  >
-                    <span className="text-[11px] text-white font-serif tracking-[0.6em] uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,1)] font-bold">
-                      {bead.title}
-                    </span>
-                  </motion.div>
-                )}
-              </AnimatePresence>
             </motion.div>
           );
         })}
@@ -1231,7 +1324,7 @@ const Home = () => {
       cta: '探索文玩世界',
       link: '/products',
       material: '品牌核心',
-      image: 'https://images.unsplash.com/photo-1615485240384-552e40079c44?q=80&w=2000&auto=format&fit=crop',
+      image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E6%96%87%E7%8E%A9%E9%A6%96%E9%A1%B5.jpg',
       detailTitle: '始于热爱，忠于匠心',
       detailDesc: '文玩馆创立于2018年，源于一群文玩爱好者对传统文化的痴迷。我们深知，真正的文玩不是冰冷的商品，而是承载了岁月、情感与审美的雅物。平台集品鉴展示、材质科普、养护指导、正品商城于一体，致力于打造一个专业、有温度的文玩文化社区。',
       features: [
@@ -1240,10 +1333,10 @@ const Home = () => {
         { icon: <Wrench size={40} />, title: '养护·传久远', desc: '盘玩技巧、保养禁忌、修复指南。让心爱之物越养越润，代代相传。', link: '/maintenance', label: '学习养护知识' }
       ],
       gallery: [
-        { title: '紫檀·帝王木', sub: '油性十足，百年成材', img: 'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?q=80&w=800&auto=format&fit=crop' },
-        { title: '和田玉·君子之器', sub: '温润内敛，德玉相配', img: 'https://images.unsplash.com/photo-1615484477778-ca3b77940c25?q=80&w=800&auto=format&fit=crop' },
-        { title: '金刚菩提·磨砺见性', sub: '盘的是棱角，磨的是心性', img: 'https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?q=80&w=800&auto=format&fit=crop' },
-        { title: '檀香·静气凝神', sub: '一炉真香，万念俱息', img: 'https://images.unsplash.com/photo-1588444839799-eb6bd27e386a?q=80&w=800&auto=format&fit=crop' }
+        { title: '紫檀·帝王木', sub: '油性十足，百年成材', img: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E7%B4%AB%E6%AA%80%C2%B7%E5%B8%9D%E7%8E%8B%E6%9C%A8.jpg' },
+        { title: '和田玉·君子之器', sub: '温润内敛，德玉相配', img: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E5%92%8C%E7%94%B0%E7%8E%89%C2%B7%E5%90%9B%E5%AD%90%E4%B9%8B%E5%99%A8.jpg' },
+        { title: '金刚菩提·磨砺见性', sub: '盘的是棱角，磨的是心性', img: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E9%87%91%E5%88%9A%E8%8F%A9%E6%8F%90%C2%B7%E7%A3%A8%E7%A0%BA%E8%A7%81%E6%80%A7.jpg' },
+        { title: '檀香·静气凝神', sub: '一炉真香，万念俱息', img: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E6%AA%80%E9%A6%99%C2%B7%E9%9D%99%E6%B0%94%E5%87%9D%E7%A5%9E.jpg' }
       ],
       advantages: [
         { icon: <ShieldCheck size={32} />, title: '严选正品', content: '每一件文玩均经过专业鉴定，支持复检，假一赔三' },
@@ -1260,7 +1353,7 @@ const Home = () => {
           { name: '金刚菩提', tag: '红润包浆·越盘越美' }
         ]
       },
-      detailImage: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8e?q=80&w=1200&auto=format&fit=crop'
+      detailImage: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E6%96%87%E7%8E%A9%E9%A6%86.jpg'
     },
     { 
       title: '木质类', 
@@ -1269,7 +1362,7 @@ const Home = () => {
       cta: '查看木质百科',
       link: '/categories',
       material: '小叶紫檀',
-      image: 'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?q=80&w=2000&auto=format&fit=crop',
+      image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E6%9C%A8%E8%B4%A8%E7%B1%BB.jpg',
       detailTitle: '木中之王 · 岁月留香',
       detailDesc: '名贵木材历经百年甚至千年方能成材。我们深入印度南部、海南黎母山等产地，为您甄选油性、密度、纹理俱佳的顶级木料。',
       features: [
@@ -1307,7 +1400,7 @@ const Home = () => {
       cta: '探索菩提世界',
       link: '/categories',
       material: '金刚菩提',
-      image: 'https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?q=80&w=2000&auto=format&fit=crop',
+      image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E8%8F%A9%E6%8F%90%E7%B1%BB.jpg',
       detailTitle: '万物皆有灵 · 菩提本无树',
       detailDesc: '菩提子是自然的馈赠，更是修行的见证。从尼泊尔的深山到您的掌心，每一颗菩提都承载着岁月的洗礼与盘玩的温润。',
       features: [
@@ -1345,7 +1438,7 @@ const Home = () => {
       cta: '鉴赏玉石之美',
       link: '/categories',
       material: '和田玉',
-      image: 'https://images.unsplash.com/photo-1615485240384-552e40079c44?q=80&w=2000&auto=format&fit=crop',
+      image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E7%8E%89%E7%9F%B3%E7%B1%BB.jpg',
       detailTitle: '谦谦君子 · 温润如玉',
       detailDesc: '玉文化贯穿中华文明。我们为您呈现羊脂白玉的细腻、帝王绿翡翠的深邃、南红玛瑙的艳丽，每一块玉石都经过国检认证。',
       features: [
@@ -1383,7 +1476,7 @@ const Home = () => {
       cta: '立即选购',
       link: '/mall',
       material: '商城精选',
-      image: 'https://images.unsplash.com/photo-1610505466023-90695034638d?q=80&w=2000&auto=format&fit=crop',
+      image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E5%AE%98%E6%96%B9%E5%95%86%E5%9F%8E.jpg',
       detailTitle: '严选好物 · 雅致生活',
       detailDesc: '商城坚持“一物一拍”原则，拒绝过度修图。我们与多位非遗传承人及知名匠人深度合作，确保每一件商品都具备收藏价值。',
       features: [
@@ -1421,7 +1514,7 @@ const Home = () => {
       cta: '了解我们的故事',
       link: '/support',
       material: '品牌故事',
-      image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8e?q=80&w=2000&auto=format&fit=crop',
+      image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E5%85%B3%E4%BA%8E%E6%88%91%E4%BB%AC.jpg',
       detailTitle: '传承东方美学 · 弘扬匠人精神',
       detailDesc: '文玩馆不仅是一个交易平台，更是一个文化传播阵地。我们通过纪录片、雅集活动等形式，记录匠人故事，让更多年轻人爱上传统文化。',
       features: [
@@ -1459,7 +1552,7 @@ const Home = () => {
       cta: '学习养护技巧',
       link: '/maintenance',
       material: '养护秘籍',
-      image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8e?q=80&w=2000&auto=format&fit=crop',
+      image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E5%85%BB%E6%8A%A4%E8%AF%B4%E6%98%8E.jpg',
       detailTitle: '盘的是棱角 · 磨的是心性',
       detailDesc: '文玩的魅力在于“变”。从最初的干涩到最终的红润透亮，每一个阶段都记录着您的耐心与情感。我们为您提供最专业的分类养护指导。',
       features: [
@@ -1488,7 +1581,7 @@ const Home = () => {
           { name: '杂项养护', tag: '避光·防潮' }
         ]
       },
-      detailImage: 'https://images.unsplash.com/photo-1588444839799-eb6bd27e386a?q=80&w=1200&auto=format&fit=crop'
+      detailImage: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E8%80%81%E5%B1%B1%E6%AA%80%E9%A6%99%E6%89%8B%E4%B8%B2.jpg'
     },
     { 
       title: '售后保障', 
@@ -1497,7 +1590,7 @@ const Home = () => {
       cta: '查看保障计划',
       link: '/support',
       material: '服务承诺',
-      image: 'https://images.unsplash.com/photo-1544413660-299165566b1d?q=80&w=2000&auto=format&fit=crop',
+      image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E5%94%AE%E5%90%8E%E4%BF%9D%E9%9A%9C.jpg',
       detailTitle: '诚信为本 · 尊享服务',
       detailDesc: '文玩馆建立了一套完善的售后服务体系，包括权威鉴定、终身维护、极速退换等，让您的每一次收藏都安心无忧。',
       features: [
@@ -1535,7 +1628,7 @@ const Home = () => {
       cta: '立即登录',
       link: '/login',
       material: '会员专属',
-      image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8e?q=80&w=2000&auto=format&fit=crop',
+      image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E9%9B%85%E9%9B%86%E7%99%BB%E5%BD%95.jpg',
       detailTitle: '雅集登录 · 开启收藏之旅',
       detailDesc: '登录后，您可以享受专属会员折扣、一键查询鉴定证书、预约大师养护服务，并参与线下雅集沙龙。',
       features: [
@@ -1582,7 +1675,7 @@ const Home = () => {
   const activeSection = sections[activeIndex];
 
   return (
-    <div className="relative min-h-screen bg-wenwan-ink overflow-x-hidden">
+    <div className="relative min-h-screen bg-wenwan-ink overflow-x-hidden pt-24 md:pt-0">
       <InteractiveBackground />
       <CustomCursor />
 
@@ -1624,7 +1717,7 @@ const Home = () => {
           onHoverChange={(hovered) => setIsHovered(hovered)}
         />
 
-        <div className="relative z-10 w-full h-full flex flex-col lg:flex-row items-center justify-center px-12 lg:pl-[450px]">
+        <div className="relative z-10 w-full h-full flex flex-col lg:flex-row items-center justify-center px-12 lg:pl-[28.125rem]">
           <AnimatePresence mode="wait">
             <motion.div 
               key={activeIndex}
@@ -1714,15 +1807,15 @@ const Home = () => {
 };
 
 export const globalProducts = [
-  { id: 1, title: '满金星小叶紫檀', category: '木质类', price: '¥2,980', image: 'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?q=80&w=800&auto=format&fit=crop', desc: '选自印度南部老料，油性十足，金星璀璨。', specs: ['材质：小叶紫檀', '规格：20mm*12颗', '产地：印度'] },
-  { id: 2, title: '和田羊脂玉挂件', category: '玉石类', price: '¥12,800', image: 'https://images.unsplash.com/photo-1615485240384-552e40079c44?q=80&w=800&auto=format&fit=crop', desc: '温润如脂，洁白无瑕，苏工名家雕刻。', specs: ['材质：和田玉', '重量：35g', '产地：新疆'] },
-  { id: 3, title: '五瓣金刚菩提', category: '菩提类', price: '¥880', image: 'https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?q=80&w=800&auto=format&fit=crop', desc: '尼泊尔高山原籽，肉质饱满，桩型端正。', specs: ['材质：金刚菩提', '规格：22mm*13颗', '产地：尼泊尔'] },
-  { id: 4, title: '海黄蜘蛛纹手串', category: '木质类', price: '¥8,500', image: 'https://images.unsplash.com/photo-1615484477778-ca3b77940c25?q=80&w=800&auto=format&fit=crop', desc: '海南黄花梨油梨老料，纹理奇特，如梦如幻。', specs: ['材质：海南黄花梨', '规格：18mm*13颗', '产地：海南'] },
-  { id: 5, title: '南红玛瑙手镯', category: '玉石类', price: '¥5,600', image: 'https://images.unsplash.com/photo-1610505466023-90695034638d?q=80&w=800&auto=format&fit=crop', desc: '凉山南红，满肉满色，柿子红润。', specs: ['材质：南红玛瑙', '内径：56mm', '产地：四川'] },
-  { id: 6, title: '星月菩提108颗', category: '菩提类', price: '¥1,280', image: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6?q=80&w=800&auto=format&fit=crop', desc: '海南毛感料，正月顺白，瓷感十足。', specs: ['材质：星月菩提', '规格：8*7mm', '产地：海南'] },
-  { id: 7, title: '老山檀香手串', category: '木质类', price: '¥1,580', image: 'https://images.unsplash.com/photo-1588444839799-eb6bd27e386a?q=80&w=800&auto=format&fit=crop', desc: '印度迈索尔老料，奶香醇厚，油脂丰富。', specs: ['材质：老山檀香', '规格：15mm*15颗', '产地：印度'] },
-  { id: 8, title: '绿松石三通套装', category: '玉石类', price: '¥3,200', image: 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=800&auto=format&fit=crop', desc: '湖北十堰高瓷蓝，无优化，瓷感极佳。', specs: ['材质：绿松石', '规格：20mm', '产地：湖北'] },
-  { id: 9, title: '凤眼菩提手持', category: '菩提类', price: '¥2,100', image: 'https://images.unsplash.com/photo-1544413660-299165566b1d?q=80&w=800&auto=format&fit=crop', desc: '尼泊尔原籽，眼正皮厚，包浆红润。', specs: ['材质：凤眼菩提', '规格：14mm*18颗', '产地：尼泊尔'] },
+  { id: 1, title: '满金星小叶紫檀', category: '木质类', price: '¥2,980', image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E6%BB%A1%E9%87%91%E6%98%9F%E5%B0%8F%E5%8F%B6%E7%B4%AB%E6%AA%80.jpg', desc: '选自印度南部老料，油性十足，金星璀璨。', specs: ['材质：小叶紫檀', '规格：20mm*12颗', '产地：印度'] },
+  { id: 2, title: '和田羊脂玉挂件', category: '玉石类', price: '¥12,800', image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E5%92%8C%E7%94%B0%E7%BE%8A%E8%84%82%E7%8E%89%E6%8C%82%E4%BB%B6.jpg', desc: '温润如脂，洁白无瑕，苏工名家雕刻。', specs: ['材质：和田玉', '重量：35g', '产地：新疆'] },
+  { id: 3, title: '五瓣金刚菩提', category: '菩提类', price: '¥880', image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E4%BA%94%E7%93%A3%E9%87%91%E5%88%9A%E8%8F%A9%E6%8F%90.jpg', desc: '尼泊尔高山原籽，肉质饱满，桩型端正。', specs: ['材质：金刚菩提', '规格：22mm*13颗', '产地：尼泊尔'] },
+  { id: 4, title: '海黄蜘蛛纹手串', category: '木质类', price: '¥8,500', image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E6%B5%B7%E9%BB%84%E8%9C%98%E8%9B%9B%E7%BA%B9%E6%89%8B%E4%B8%B2.jpg', desc: '海南黄花梨油梨老料，纹理奇特，如梦如幻。', specs: ['材质：海南黄花梨', '规格：18mm*13颗', '产地：海南'] },
+  { id: 5, title: '南红玛瑙手镯', category: '玉石类', price: '¥5,600', image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E5%8D%97%E7%BA%A2%E7%8E%9B%E7%91%99%E6%89%8B%E9%95%AF.jpg', desc: '凉山南红，满肉满色，柿子红润。', specs: ['材质：南红玛瑙', '内径：56mm', '产地：四川'] },
+  { id: 6, title: '星月菩提108颗', category: '菩提类', price: '¥1,280', image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E6%98%9F%E6%9C%88%E8%8F%A9%E6%8F%90108%E9%A2%97.jpg', desc: '海南毛感料，正月顺白，瓷感十足。', specs: ['材质：星月菩提', '规格：8*7mm', '产地：海南'] },
+  { id: 7, title: '老山檀香手串', category: '木质类', price: '¥1,580', image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E8%80%81%E5%B1%B1%E6%AA%80%E9%A6%99%E6%89%8B%E4%B8%B2.jpg', desc: '印度迈索尔老料，奶香醇厚，油脂丰富。', specs: ['材质：老山檀香', '规格：15mm*15颗', '产地：印度'] },
+  { id: 8, title: '绿松石三通套装', category: '玉石类', price: '¥3,200', image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E7%BB%BF%E6%9D%BE%E7%9F%B3%E4%B8%89%E9%80%9A%E5%A5%97%E8%A3%85.jpg', desc: '湖北十堰高瓷蓝，无优化，瓷感极佳。', specs: ['材质：绿松石', '规格：20mm', '产地：湖北'] },
+  { id: 9, title: '凤眼菩提手持', category: '菩提类', price: '¥2,100', image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E5%87%A4%E7%9C%BC%E8%8F%A9%E6%8F%90%E6%89%8B%E6%8C%81.jpg', desc: '尼泊尔原籽，眼正皮厚，包浆红润。', specs: ['材质：凤眼菩提', '规格：14mm*18颗', '产地：尼泊尔'] },
 ];
 
 const Products = () => {
@@ -1737,7 +1830,6 @@ const Products = () => {
     <div className="pt-32 pb-20 px-6 bg-wenwan-paper min-h-screen relative overflow-hidden">
       <InteractiveBackground />
       <CustomCursor />
-      <BackToHome />
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-16">
           <motion.h1 
@@ -1780,7 +1872,7 @@ const Products = () => {
               </div>
               <div className="relative aspect-video rounded-sm overflow-hidden shadow-2xl" style={{ translateZ: 100 }}>
                 <img 
-                  src="https://images.unsplash.com/photo-1615485240384-552e40079c44?q=80&w=1200&auto=format&fit=crop" 
+                  src="https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E3%80%8A%E7%91%9E%E5%85%BD%E7%BA%B3%E7%A6%8F%E3%80%8B%E5%92%8C%E7%94%B0%E7%8E%89%E9%9B%95.jpg" 
                   alt="Masterpiece" 
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                   referrerPolicy="no-referrer"
@@ -1863,10 +1955,10 @@ const Products = () => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="bg-wenwan-paper max-w-5xl w-full rounded-sm overflow-hidden flex flex-col md:flex-row shadow-2xl"
+              className="bg-wenwan-paper max-w-5xl w-full max-h-[90vh] rounded-sm overflow-hidden flex flex-col md:flex-row shadow-2xl"
               onClick={e => e.stopPropagation()}
             >
-              <div className="md:w-1/2 aspect-square md:aspect-auto">
+              <div className="md:w-1/2 aspect-square md:aspect-auto shrink-0">
                 <img 
                   src={selectedProduct.image} 
                   alt={selectedProduct.title} 
@@ -1874,14 +1966,14 @@ const Products = () => {
                   referrerPolicy="no-referrer"
                 />
               </div>
-              <div className="md:w-1/2 p-12 relative flex flex-col">
+              <div className="md:w-1/2 p-6 md:p-12 relative flex flex-col overflow-y-auto">
                 <button 
                   onClick={() => setSelectedProduct(null)}
-                  className="absolute top-6 right-6 text-wenwan-gray hover:text-wenwan-ink transition-colors"
+                  className="absolute top-4 right-4 md:top-6 md:right-6 text-wenwan-gray hover:text-wenwan-ink transition-colors z-10 bg-white/50 md:bg-transparent rounded-full p-1 backdrop-blur-sm md:backdrop-blur-none"
                 >
                   <X size={32} />
                 </button>
-                <div className="flex-grow">
+                <div className="flex-grow mt-8 md:mt-0">
                   <span className="text-wenwan-gold font-bold tracking-widest text-sm mb-4 block uppercase">{selectedProduct.category}</span>
                   <h2 className="text-4xl font-bold mb-6 font-serif text-wenwan-ink">{selectedProduct.title}</h2>
                   <p className="text-wenwan-gray text-lg mb-8 font-serif leading-relaxed">{selectedProduct.desc}</p>
@@ -1941,8 +2033,9 @@ const Categories = () => {
         { name: '小叶紫檀', origin: '印度', feature: '牛毛纹、金星', value: '木中之王' },
         { name: '黄花梨', origin: '海南', feature: '鬼脸纹、行云流水', value: '木中皇后' },
         { name: '沉香', origin: '东南亚', feature: '油脂丰富、香韵持久', value: '众香之首' },
+        { name: '老山檀香', origin: '印度', feature: '香气醇厚、细腻', value: '香中之王' }
       ],
-      img: 'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?q=80&w=1200&auto=format&fit=crop'
+      img: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E5%90%8D%E6%9C%A8%E7%B3%BB%E5%88%97.jpg'
     },
     {
       id: '玉石类',
@@ -1952,8 +2045,9 @@ const Categories = () => {
         { name: '和田玉', origin: '新疆', feature: '温润细腻、油脂感强', value: '国玉之魂' },
         { name: '南红', origin: '四川/云南', feature: '色泽艳丽、质地坚韧', value: '赤玉之精' },
         { name: '绿松石', origin: '湖北', feature: '瓷感十足、颜色纯正', value: '东方神石' },
+        { name: '翡翠', origin: '缅甸', feature: '翠性明显、种水通透', value: '玉中之王' }
       ],
-      img: 'https://images.unsplash.com/photo-1615485240384-552e40079c44?q=80&w=1200&auto=format&fit=crop'
+      img: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E7%8E%89%E7%9F%B3%E7%B3%BB%E5%88%97.jpg'
     },
     {
       id: '菩提类',
@@ -1963,8 +2057,9 @@ const Categories = () => {
         { name: '金刚菩提', origin: '尼泊尔', feature: '纹路深邃、桩型端正', value: '力量象征' },
         { name: '星月菩提', origin: '海南', feature: '正月顺白、瓷感极佳', value: '禅意之选' },
         { name: '凤眼菩提', origin: '尼泊尔', feature: '眼型端正、皮质红润', value: '修行必备' },
+        { name: '莲花菩提', origin: '尼泊尔', feature: '纹理如莲、稀有珍贵', value: '菩提之冠' }
       ],
-      img: 'https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?q=80&w=1200&auto=format&fit=crop'
+      img: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E8%8F%A9%E6%8F%90%E7%B3%BB%E5%88%97.jpg'
     },
     {
       id: '杂项类',
@@ -1974,8 +2069,9 @@ const Categories = () => {
         { name: '蜜蜡', origin: '波罗的海', feature: '质地温润、色泽金黄', value: '中医五宝' },
         { name: '绿松石', origin: '湖北', feature: '瓷感十足、颜色纯正', value: '东方神石' },
         { name: '南红玛瑙', origin: '四川', feature: '满肉满色、质地坚韧', value: '赤玉瑰宝' },
+        { name: '琥珀', origin: '波罗的海', feature: '质地轻盈、色泽通透', value: '时光凝结' }
       ],
-      img: 'https://images.unsplash.com/photo-1610505466023-90695034638d?q=80&w=1200&auto=format&fit=crop'
+      img: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E5%A5%87%E7%8F%8D%E7%B3%BB%E5%88%97.jpg'
     }
   ];
 
@@ -1985,6 +2081,7 @@ const Categories = () => {
     { name: '和田玉', density: '2.95-3.17', oil: '温润', hardness: '6.0-6.5', feature: '油脂光泽' },
     { name: '翡翠', density: '3.30-3.36', oil: '玻璃光泽', hardness: '6.5-7.0', feature: '翠性、种水' },
     { name: '金刚菩提', density: '沉水级', oil: '中', hardness: '高', feature: '肉纹、桩型' },
+    { name: '蜜蜡', density: '1.05-1.10', oil: '中', hardness: '低', feature: '质地温润、色泽金黄' },
   ];
 
   const currentCat = categories.find(c => c.id === activeTab)!;
@@ -1993,7 +2090,6 @@ const Categories = () => {
     <div className="pt-32 pb-20 px-6 bg-wenwan-paper min-h-screen relative overflow-hidden">
       <InteractiveBackground />
       <CustomCursor />
-      <BackToHome />
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-16">
           <motion.h1 
@@ -2145,15 +2241,15 @@ const Mall = () => {
   const categories = ['全部', '手串', '把件', '配饰', '香道', '礼盒'];
   
   const products = [
-    { id: 1, name: '小叶紫檀金星手串', price: 1980, category: '手串', image: 'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?q=80&w=600&auto=format&fit=crop', isSale: true, oldPrice: 2580, desc: '印度老料，金星璀璨。' },
-    { id: 2, name: '和田玉瑞兽把件', price: 8800, category: '把件', image: 'https://images.unsplash.com/photo-1615485240384-552e40079c44?q=80&w=600&auto=format&fit=crop', desc: '温润如脂，名家雕刻。' },
-    { id: 3, name: '绿松石顶珠', price: 560, category: '配饰', image: 'https://images.unsplash.com/photo-1610505466023-90695034638d?q=80&w=600&auto=format&fit=crop', desc: '高瓷蓝，无优化。' },
-    { id: 4, name: '沉香线香礼盒', price: 320, category: '香道', image: 'https://images.unsplash.com/photo-1599707334091-3d22b1f3b274?q=80&w=600&auto=format&fit=crop', isSale: true, oldPrice: 450, desc: '天然沉香，静气凝神。' },
-    { id: 5, name: '金刚菩提六瓣', price: 1200, category: '手串', image: 'https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?q=80&w=600&auto=format&fit=crop', desc: '尼泊尔原籽，肉质饱满。' },
-    { id: 6, name: '文房四宝套装', price: 1580, category: '礼盒', image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8e?q=80&w=600&auto=format&fit=crop', desc: '宣纸徽墨，书画必备。' },
-    { id: 7, name: '南红玛瑙背云', price: 450, category: '配饰', image: 'https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?q=80&w=600&auto=format&fit=crop', desc: '柿子红，满肉满色。' },
-    { id: 8, name: '老山檀香卧香', price: 280, category: '香道', image: 'https://images.unsplash.com/photo-1588444839799-eb6bd27e386a?q=80&w=600&auto=format&fit=crop', desc: '迈索尔老料，奶香浓郁。' },
-    { id: 9, name: '星月菩提正月', price: 980, category: '手串', image: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6?q=80&w=600&auto=format&fit=crop', isSale: true, oldPrice: 1280, desc: '海南毛感料，顺白正月。' },
+    { id: 1, name: '小叶紫檀金星手串', price: 1980, category: '手串', image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E5%B0%8F%E5%8F%B6%E7%B4%AB%E6%AA%80%E9%87%91%E6%98%9F%E6%89%8B%E4%B8%B2.jpg', isSale: true, oldPrice: 2580, desc: '印度老料，金星璀璨。' },
+    { id: 2, name: '和田玉瑞兽把件', price: 8800, category: '把件', image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E5%92%8C%E7%94%B0%E7%8E%89%E7%91%9E%E5%85%BD%E6%8A%8A%E4%BB%B6.jpg', desc: '温润如脂，名家雕刻。' },
+    { id: 3, name: '绿松石顶珠', price: 560, category: '配饰', image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E7%BB%BF%E6%9D%BE%E7%9F%B3%E9%A1%B6%E7%8F%A0.jpg', desc: '高瓷蓝，无优化。' },
+    { id: 4, name: '沉香线香礼盒', price: 320, category: '香道', image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E6%B2%89%E9%A6%99%E7%BA%BF%E9%A6%99%E7%A4%BC%E7%9B%92.jpg', isSale: true, oldPrice: 450, desc: '天然沉香，静气凝神。' },
+    { id: 5, name: '金刚菩提六瓣', price: 1200, category: '手串', image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E9%87%91%E5%88%9A%E8%8F%A9%E6%8F%90%E5%85%AD%E7%93%A3.jpg', desc: '尼泊尔原籽，肉质饱满。' },
+    { id: 6, name: '文房四宝套装', price: 1580, category: '礼盒', image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E6%96%87%E6%88%BF%E5%9B%9B%E5%AE%9D%E5%A5%97%E8%A3%85.jpg', desc: '宣纸徽墨，书画必备。' },
+    { id: 7, name: '南红玛瑙背云', price: 450, category: '配饰', image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E5%8D%97%E7%BA%A2%E7%8E%9B%E7%91%99%E8%83%8C%E4%BA%91.jpg', desc: '柿子红，满肉满色。' },
+    { id: 8, name: '老山檀香卧香', price: 280, category: '香道', image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E8%80%81%E5%B1%B1%E6%AA%80%E9%A6%99%E5%8D%A7%E9%A6%99.jpg', desc: '迈索尔老料，奶香浓郁。' },
+    { id: 9, name: '星月菩提正月', price: 980, category: '手串', image: 'https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/main/%E6%98%9F%E6%9C%88%E8%8F%A9%E6%8F%90%E6%AD%A3%E6%9C%88.jpg', isSale: true, oldPrice: 1280, desc: '海南毛感料，顺白正月。' },
   ];
 
   const filteredProducts = products.filter(p => 
@@ -2182,29 +2278,46 @@ const Mall = () => {
     <div className="pt-32 pb-20 px-6 bg-wenwan-paper min-h-screen relative overflow-hidden">
       <InteractiveBackground />
       <CustomCursor />
-      <BackToHome />
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Search & Filter Header */}
-        <div className="flex flex-col lg:flex-row justify-between items-center gap-8 mb-12">
-          <div className="relative w-full lg:w-96 group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-wenwan-gray group-focus-within:text-wenwan-gold transition-colors" size={20} />
-            <input 
-              type="text" 
-              placeholder="搜索心仪藏品..." 
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 rounded-full border border-wenwan-paper-dark focus:border-wenwan-gold outline-none font-serif transition-all bg-white/50 backdrop-blur-sm focus:bg-white focus:shadow-lg"
-            />
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-12">
+          <div className="flex w-full lg:w-auto items-center gap-4">
+            <div className="relative flex-1 lg:w-96 group">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-wenwan-gray group-focus-within:text-wenwan-gold transition-colors" size={20} />
+              <input 
+                type="text" 
+                placeholder="搜索心仪藏品..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-12 pr-4 py-3 rounded-full border border-wenwan-paper-dark focus:border-wenwan-gold outline-none font-serif transition-all bg-white/50 backdrop-blur-sm focus:bg-white focus:shadow-lg"
+              />
+            </div>
+            <button 
+              onClick={() => setIsCartOpen(true)}
+              className="relative p-3 bg-wenwan-ink text-white rounded-full hover:bg-wenwan-gold transition-all shadow-xl hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] btn-neumorphic-dark shrink-0 lg:hidden"
+            >
+              <ShoppingBag size={24} />
+              {cart.length > 0 && (
+                <motion.span 
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="absolute -top-1 -right-1 bg-wenwan-red text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold"
+                >
+                  {cart.reduce((s, i) => s + i.quantity, 0)}
+                </motion.span>
+              )}
+            </button>
           </div>
-          <div className="flex items-center gap-8">
-            <div className="flex gap-4 overflow-x-auto pb-2 w-full lg:w-auto justify-center lg:justify-start">
+          
+          <div className="flex items-center gap-8 w-full lg:w-auto overflow-hidden">
+            <div className="flex gap-4 overflow-x-auto pb-4 -mb-4 w-full lg:w-auto justify-start [&::-webkit-scrollbar]:hidden snap-x">
               {categories.map(cat => (
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
                   className={cn(
-                    "px-6 py-2 rounded-full border transition-all whitespace-nowrap font-serif text-sm",
+                    "px-6 py-2 rounded-full border transition-all whitespace-nowrap font-serif text-sm snap-start",
                     activeCategory === cat 
                       ? "bg-wenwan-ink border-wenwan-ink text-white shadow-lg" 
                       : "border-wenwan-paper-dark text-wenwan-gray hover:border-wenwan-gold hover:text-wenwan-gold"
@@ -2216,7 +2329,7 @@ const Mall = () => {
             </div>
             <button 
               onClick={() => setIsCartOpen(true)}
-              className="relative p-3 bg-wenwan-ink text-white rounded-full hover:bg-wenwan-gold transition-all shadow-xl hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] btn-neumorphic-dark"
+              className="relative p-3 bg-wenwan-ink text-white rounded-full hover:bg-wenwan-gold transition-all shadow-xl hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] btn-neumorphic-dark shrink-0 hidden lg:block"
             >
               <ShoppingBag size={24} />
               {cart.length > 0 && (
@@ -2254,7 +2367,7 @@ const Mall = () => {
         {/* Product Grid */}
         <motion.div 
           layout
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10"
+          className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-10"
         >
           <AnimatePresence mode="popLayout">
             {filteredProducts.map((product) => (
@@ -2276,27 +2389,27 @@ const Mall = () => {
                       referrerPolicy="no-referrer"
                     />
                     {product.isSale && (
-                      <span className="absolute top-4 left-4 bg-wenwan-red text-white text-xs font-bold px-3 py-1 rounded-sm shadow-md">特惠</span>
+                      <span className="absolute top-2 left-2 sm:top-4 sm:left-4 bg-wenwan-red text-white text-[10px] sm:text-xs font-bold px-2 py-0.5 sm:px-3 sm:py-1 rounded-sm shadow-md">特惠</span>
                     )}
-                    <div className="absolute bottom-4 right-4 translate-y-12 group-hover:translate-y-0 transition-transform flex gap-2">
-                      <button className="p-3 bg-white text-wenwan-ink rounded-full shadow-lg hover:bg-wenwan-gold hover:text-white transition-all btn-neumorphic">
-                        <Heart size={20} />
+                    <div className="absolute bottom-2 right-2 sm:bottom-4 sm:right-4 translate-y-12 group-hover:translate-y-0 transition-transform flex gap-1 sm:gap-2">
+                      <button className="p-2 sm:p-3 bg-white text-wenwan-ink rounded-full shadow-lg hover:bg-wenwan-gold hover:text-white transition-all btn-neumorphic">
+                        <Heart size={16} className="sm:w-5 sm:h-5" />
                       </button>
                       <button 
                         onClick={(e) => { e.stopPropagation(); addToCart(product); }}
-                        className="p-3 bg-wenwan-gold text-white rounded-full shadow-lg hover:bg-wenwan-ink transition-all btn-neumorphic"
+                        className="p-2 sm:p-3 bg-wenwan-gold text-white rounded-full shadow-lg hover:bg-wenwan-ink transition-all btn-neumorphic"
                       >
-                        <ShoppingBag size={20} />
+                        <ShoppingBag size={16} className="sm:w-5 sm:h-5" />
                       </button>
                     </div>
                   </div>
-                  <div className="p-6 bg-white relative z-10">
-                    <span className="text-xs text-wenwan-gray font-serif mb-1 block">{product.category}</span>
-                    <h3 className="text-xl font-bold font-serif text-wenwan-ink mb-3 group-hover:text-wenwan-gold transition-colors">{product.name}</h3>
-                    <div className="flex items-center gap-3">
-                      <span className="text-2xl font-bold text-wenwan-gold">¥{product.price}</span>
+                  <div className="p-3 sm:p-6 bg-white relative z-10">
+                    <span className="text-[10px] sm:text-xs text-wenwan-gray font-serif mb-1 block">{product.category}</span>
+                    <h3 className="text-sm sm:text-xl font-bold font-serif text-wenwan-ink mb-1 sm:mb-3 group-hover:text-wenwan-gold transition-colors truncate">{product.name}</h3>
+                    <div className="flex items-center gap-1 sm:gap-3 flex-wrap">
+                      <span className="text-base sm:text-2xl font-bold text-wenwan-gold">¥{product.price}</span>
                       {product.isSale && (
-                        <span className="text-sm text-wenwan-gray line-through">¥{product.oldPrice}</span>
+                        <span className="text-[10px] sm:text-sm text-wenwan-gray line-through">¥{product.oldPrice}</span>
                       )}
                     </div>
                   </div>
@@ -2394,17 +2507,20 @@ const Mall = () => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.98, opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="bg-wenwan-paper max-w-4xl w-full rounded-sm overflow-hidden flex flex-col md:flex-row shadow-2xl"
+              className="bg-wenwan-paper max-w-4xl w-full max-h-[90vh] rounded-sm overflow-hidden flex flex-col md:flex-row shadow-2xl"
               onClick={e => e.stopPropagation()}
             >
-              <div className="md:w-1/2 aspect-square">
+              <div className="md:w-1/2 aspect-square md:aspect-auto shrink-0">
                 <img src={selectedProduct.image} alt={selectedProduct.name} className="w-full h-full object-cover" />
               </div>
-              <div className="md:w-1/2 p-12 flex flex-col">
-                <button onClick={() => setSelectedProduct(null)} className="self-end text-wenwan-gray hover:text-wenwan-ink mb-8">
+              <div className="md:w-1/2 p-6 md:p-12 relative flex flex-col overflow-y-auto">
+                <button 
+                  onClick={() => setSelectedProduct(null)} 
+                  className="absolute top-4 right-4 md:top-6 md:right-6 text-wenwan-gray hover:text-wenwan-ink transition-colors z-10 bg-white/50 md:bg-transparent rounded-full p-1 backdrop-blur-sm md:backdrop-blur-none"
+                >
                   <X size={32} />
                 </button>
-                <div className="flex-grow space-y-6">
+                <div className="flex-grow space-y-6 mt-8 md:mt-0">
                   <span className="text-wenwan-gold font-bold tracking-widest text-sm uppercase">{selectedProduct.category}</span>
                   <h2 className="text-4xl font-bold font-serif text-wenwan-ink">{selectedProduct.name}</h2>
                   <p className="text-wenwan-gray text-lg font-serif leading-relaxed italic">{selectedProduct.desc}</p>
@@ -2434,7 +2550,8 @@ const Maintenance = () => {
       tips: [
         { title: '忌水忌汗', content: '木质手串最忌水分和汗液。水分会导致木材膨胀变形，汗液中的酸碱成分会腐蚀木质，使其失去光泽。' },
         { title: '净手盘玩', content: '盘玩前务必洗净双手并擦干。建议佩戴纯棉手套盘玩，直到珠体表面形成一层薄薄的包浆。' },
-        { title: '防风防晒', content: '避免阳光直射和强风吹袭，防止木材失水开裂。不佩戴时应放入密封袋保存。' }
+        { title: '防风防晒', content: '避免阳光直射和强风吹袭，防止木材失水开裂。不佩戴时应放入密封袋保存。' },
+        { title: '定期上油', content: '对于较干的木质，可少量涂抹核桃油，但切忌过量，以免堵塞毛孔。' }
       ]
     },
     {
@@ -2442,7 +2559,8 @@ const Maintenance = () => {
       tips: [
         { title: '多盘多刷', content: '菩提类藏品需要经常盘玩和刷拭。刷拭可以清理缝隙污垢，同时起到抛光作用。' },
         { title: '防潮防霉', content: '菩提子是植物种子，环境潮湿易发霉。若不慎受潮，应及时用干布擦干并自然阴干。' },
-        { title: '避免温差', content: '剧烈的温度变化会导致菩提子开裂。冬季进入暖气房时需格外注意。' }
+        { title: '避免温差', content: '剧烈的温度变化会导致菩提子开裂。冬季进入暖气房时需格外注意。' },
+        { title: '忌油腻', content: '菩提子多为天然植物，忌接触油脂，否则易变色不均或发黑。' }
       ]
     },
     {
@@ -2450,7 +2568,16 @@ const Maintenance = () => {
       tips: [
         { title: '常佩常戴', content: '“人养玉，玉养人”。长期佩戴可以让玉石吸收人体油脂，变得更加温润。' },
         { title: '忌碰忌撞', content: '玉石虽然硬度高，但脆性大。剧烈碰撞可能产生内裂，影响价值。' },
-        { title: '远离化学品', content: '香水、洗洁精等化学品会损伤玉石表面的光泽。' }
+        { title: '远离化学品', content: '香水、洗洁精等化学品会损伤玉石表面的光泽。' },
+        { title: '定期清洗', content: '可用软毛刷蘸清水轻轻刷洗，去除表面灰尘，保持光泽。' }
+      ]
+    },
+    {
+      category: '琥珀蜜蜡',
+      tips: [
+        { title: '避免高温', content: '琥珀蜜蜡熔点低，切忌靠近热源，否则会导致变形或熔化。' },
+        { title: '防划伤', content: '硬度较低，易被硬物划伤，佩戴时应避免与金属饰品摩擦。' },
+        { title: '温水清洗', content: '可用温水加少量中性洗涤剂清洗，随后用软布擦干。' }
       ]
     }
   ];
@@ -2461,7 +2588,6 @@ const Maintenance = () => {
     <div className="pt-32 pb-20 px-6 bg-wenwan-paper min-h-screen relative overflow-hidden">
       <InteractiveBackground />
       <CustomCursor />
-      <BackToHome />
       <div className="max-w-5xl mx-auto relative z-10">
         <div className="text-center mb-16">
           <motion.h1 
@@ -2595,7 +2721,6 @@ const Support = () => {
 
   return (
     <div className="pt-32 pb-20 px-6 bg-wenwan-paper min-h-screen">
-      <BackToHome />
       <div className="max-w-7xl mx-auto">
         
         {/* Brand Story Section */}
@@ -2633,7 +2758,7 @@ const Support = () => {
             >
               <div className="rounded-sm overflow-hidden shadow-2xl aspect-[4/5]">
                 <img 
-                  src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8e?q=80&w=1200&auto=format&fit=crop" 
+                  src="https://raw.githubusercontent.com/wengzhenjie6-cpu/wenwang/1962cfa7f7ba4d73f6820cf7a5271d94f4d393f6/%E4%B8%9C%E6%96%B9%E7%BE%8E%E5%AD%A6.jpg" 
                   alt="Brand Story" 
                   className="w-full h-full object-cover"
                   referrerPolicy="no-referrer"
@@ -2671,7 +2796,9 @@ const Support = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           <div className="space-y-12">
-            <h2 className="text-3xl font-bold font-serif text-wenwan-ink tracking-widest border-b border-wenwan-gold/20 pb-4">服务流程</h2>
+            <ScrollFloat as="h2" containerClassName="text-3xl font-bold font-serif text-wenwan-ink tracking-widest border-b border-wenwan-gold/20 pb-4">
+              服务流程
+            </ScrollFloat>
             <div className="space-y-8">
               {[
                 { step: '01', title: '在线申请', desc: '联系在线客服或提交售后表单，描述您的问题。' },
@@ -2706,7 +2833,9 @@ const Support = () => {
           </div>
 
           <div className="space-y-12">
-            <h2 className="text-3xl font-bold font-serif text-wenwan-ink tracking-widest border-b border-wenwan-gold/20 pb-4">品牌理念</h2>
+            <ScrollFloat as="h2" containerClassName="text-3xl font-bold font-serif text-wenwan-ink tracking-widest border-b border-wenwan-gold/20 pb-4">
+              品牌理念
+            </ScrollFloat>
             <div className="grid grid-cols-1 gap-8">
               {[
                 { title: '匠心', desc: '每一件藏品都经过严格筛选，确保每一颗珠子都符合收藏级别。' },
@@ -2820,10 +2949,9 @@ const Login = () => {
       </div>
 
       {/* Right Side: Form Area (55%) */}
-      <div className="flex-1 bg-white relative lg:rounded-tl-[32px] flex flex-col justify-center items-center px-6 md:px-20 py-12">
-        <BackToHome />
+      <div className="flex-1 bg-white relative lg:rounded-tl-[2rem] flex flex-col justify-center items-center px-6 md:px-20 py-12">
 
-        <div className="w-full max-w-[440px] space-y-10">
+        <div className="w-full max-w-[27.5rem] space-y-10">
           {/* Welcome & Title */}
           <div className="space-y-3">
             <p className="text-gray-400 text-sm tracking-widest">
@@ -2896,7 +3024,7 @@ const Login = () => {
                   <label htmlFor="remember" className="text-xs text-gray-500 tracking-widest">记住账号</label>
                 </div>
 
-                <button className="w-full h-12 bg-wenwan-gold text-white rounded-[40px] font-bold tracking-[0.4em] hover:bg-wenwan-gold/90 transition-all shadow-lg shadow-wenwan-gold/20 btn-neumorphic">
+                <button className="w-full h-12 bg-wenwan-gold text-white rounded-[2.5rem] font-bold tracking-[0.4em] hover:bg-wenwan-gold/90 transition-all shadow-lg shadow-wenwan-gold/20 btn-neumorphic">
                   登录
                 </button>
 
@@ -2957,7 +3085,7 @@ const Login = () => {
                   </label>
                 </div>
 
-                <button className="w-full h-12 bg-wenwan-gold text-white rounded-[40px] font-bold tracking-[0.4em] hover:bg-wenwan-gold/90 transition-all shadow-lg shadow-wenwan-gold/20 btn-neumorphic">
+                <button className="w-full h-12 bg-wenwan-gold text-white rounded-[2.5rem] font-bold tracking-[0.4em] hover:bg-wenwan-gold/90 transition-all shadow-lg shadow-wenwan-gold/20 btn-neumorphic">
                   注册并登录
                 </button>
               </motion.form>
@@ -3060,7 +3188,7 @@ export default function App() {
   return (
     <Router>
       <ScrollToTop />
-      <div className="min-h-screen bg-wenwan-paper font-sans selection:bg-wenwan-red selection:text-white flex flex-col">
+      <div className="min-h-screen bg-wenwan-paper font-sans selection:bg-wenwan-red selection:text-white flex flex-col overflow-x-hidden">
         <Navbar />
         <main className="flex-grow">
           <Routes>

@@ -33,3 +33,61 @@
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700;900&family=Inter:wght@400;500;600;700&display=swap');
+
+/* Mobile responsive scaling */
+@media (max-width: 768px) {
+  html {
+    /* Scale down 1rem from 16px to 13.3333px (about 83.3%)
+       This perfectly aligns with the mobile typography spec:
+       - text-2xl (1.5rem) -> 20px (导航栏标题)
+       - text-xl (1.25rem) -> 16.66px
+       - text-lg (1.125rem) -> 15px (列表正文 ~16px)
+       - text-base (1rem) -> 13.33px (二级说明 ~14px)
+       - text-sm (0.875rem) -> 11.66px (辅助标签 ~12px)
+       - text-xs (0.75rem) -> 10px (Tab 图标文字)
+       It also proportionally scales down all rem-based image heights/widths, paddings, and margins.
+    */
+    font-size: 13.3333px;
+  }
+
+  /* Adjust font weights for mobile according to spec */
+  .font-bold {
+    font-weight: 500 !important; /* Medium for headings */
+  }
+  .font-semibold {
+    font-weight: 500 !important; /* Medium */
+  }
+  .font-medium {
+    font-weight: 400 !important; /* Regular for body text */
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    /* Further scale down for very small screens if needed, 
+       but 13.3333px is usually perfect for 375px screens.
+       Let's use 12.5px (about 78%) for smaller phones.
+       - text-2xl -> 18.75px
+       - text-lg -> 14px
+       - text-base -> 12.5px
+       - text-sm -> 10.9px
+       - text-xs -> 9.3px
+    */
+    font-size: 12.5px;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.3); /* wenwan-gold with opacity */
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.6);
+}

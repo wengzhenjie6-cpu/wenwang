@@ -1,0 +1,19 @@
+354:                  "text-2xl font-bold tracking-[0.4em] transition-all duration-500 font-serif whitespace-nowrap",
+419:          <h3 className="text-2xl font-serif font-bold text-wenwan-gold tracking-widest">文玩馆</h3>
+558:              <h3 className="text-2xl font-bold font-serif text-[#3D3229]">{feature.title}</h3>
+631:          <p className="text-2xl text-wenwan-gold font-serif italic">"千锤百炼，方得始终"</p>
+675:                <h3 className="text-2xl font-bold font-serif text-[#3D3229] mb-4">{feature.title}</h3>
+733:                  <h3 className="text-2xl font-bold font-serif text-[#3D3229] mb-4">
+752:            <h3 className="text-2xl font-serif text-wenwan-gold mb-8 border-b border-wenwan-gold/30 pb-4">定制预览</h3>
+795:              <h3 className={`font-bold font-serif text-[#3D3229] mb-4 ${idx === 0 ? 'text-4xl' : 'text-2xl'}`}>{adv.title}</h3>
+835:          <p className="text-2xl font-serif italic text-white/80">{section.subtitle}</p>
+860:            <h3 className="text-2xl font-bold text-[#3D3229] font-serif">欢迎归来</h3>
+1041:                <h3 className="text-2xl font-bold font-serif text-[#3D3229]">{item.title}</h3>
+1701:              <p className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto lg:mx-0 font-serif italic leading-relaxed">
+2368:                      <span className="text-base sm:text-2xl font-bold text-wenwan-gold">¥{product.price}</span>
+2409:                <h3 className="text-2xl font-bold font-serif text-wenwan-ink">我的雅集</h3>
+2630:          <h3 className="text-2xl font-bold font-serif text-wenwan-ink mb-8 text-center">养护月历</h3>
+2647:          <h3 className="text-2xl font-bold font-serif text-wenwan-ink mb-8 text-center">常见问题 FAQ</h3>
+2746:              <h3 className="text-2xl font-bold font-serif text-wenwan-ink">{g.title}</h3>
+2812:            <h2 className="text-2xl font-bold font-serif text-wenwan-ink mb-8">在线报修/咨询</h2>
+2850:              <p className="text-wenwan-gold font-bold text-2xl">400-888-9999</p>

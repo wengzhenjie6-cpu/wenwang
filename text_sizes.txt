@@ -1,0 +1,359 @@
+153:      <h2 className="text-4xl font-bold mb-16 font-serif text-center tracking-widest text-wenwan-paper">{title}</h2>
+165:              <div className="absolute bottom-4 left-6 text-white font-serif text-xl font-bold tracking-widest drop-shadow-md">
+177:                  <p className="text-wenwan-paper/70 leading-loose font-serif text-sm">
+181:                    <span className="text-wenwan-gold text-xs font-bold tracking-widest">了解更多细节</span>
+182:                    <ArrowRight size={16} className="text-wenwan-gold" />
+310:                "hover:text-wenwan-gold transition-all duration-700 z-10 flex items-center relative",
+311:                scrolled ? "text-white" : (isHome ? "text-white" : "text-wenwan-ink"),
+323:                "absolute left-10 text-lg font-serif tracking-widest hidden md:block whitespace-nowrap transition-all duration-700",
+345:                  !scrolled && isHome && "border-white text-white",
+346:                  "group-hover:border-wenwan-gold group-hover:text-wenwan-gold"
+354:                  "text-2xl font-bold tracking-[0.4em] transition-all duration-500 font-serif whitespace-nowrap",
+355:                  !scrolled && isHome && "text-white",
+356:                  "group-hover:text-wenwan-gold"
+368:                  "hover:text-wenwan-gold transition-colors",
+369:                  scrolled ? "text-white" : (isHome ? "text-white" : "text-wenwan-ink")
+391:            <div className="absolute top-10 left-12 right-12 flex justify-between items-center text-white z-10">
+395:              <span className="font-serif text-4xl tracking-widest text-white mb-8">文玩馆</span>
+396:              <Link to="/" onClick={() => setIsOpen(false)} className="text-3xl font-serif text-white tracking-widest">文玩首页</Link>
+397:              <Link to="/mall" onClick={() => setIsOpen(false)} className="text-3xl font-serif text-white tracking-widest">官方商城</Link>
+398:              <Link to="/login" onClick={() => setIsOpen(false)} className="text-3xl font-serif text-white tracking-widest">雅集登录</Link>
+399:              <Link to="/maintenance" onClick={() => setIsOpen(false)} className="text-3xl font-serif text-white tracking-widest">养护说明</Link>
+400:              <Link to="/support" onClick={() => setIsOpen(false)} className="text-3xl font-serif text-white tracking-widest">售后保障</Link>
+401:              <Link to="/categories" onClick={() => setIsOpen(false)} className="text-3xl font-serif text-white tracking-widest">菩提类</Link>
+402:              <Link to="/categories" onClick={() => setIsOpen(false)} className="text-3xl font-serif text-white tracking-widest">玉石类</Link>
+403:              <Link to="/categories" onClick={() => setIsOpen(false)} className="text-3xl font-serif text-white tracking-widest">木质类</Link>
+404:              <Link to="/support" onClick={() => setIsOpen(false)} className="text-3xl font-serif text-white tracking-widest">关于我们</Link>
+414:  <footer className="bg-wenwan-ink text-wenwan-paper pt-24 pb-12 px-6 border-t border-white/10">
+419:          <h3 className="text-2xl font-serif font-bold text-wenwan-gold tracking-widest">文玩馆</h3>
+420:          <p className="text-wenwan-paper/60 text-sm leading-loose font-serif">
+427:          <h4 className="text-lg font-bold tracking-widest text-white">探索发现</h4>
+428:          <ul className="space-y-4 text-sm text-wenwan-paper/60 font-serif">
+429:            <li><Link to="/products" className="hover:text-wenwan-gold transition-colors">文玩品鉴</Link></li>
+430:            <li><Link to="/categories" className="hover:text-wenwan-gold transition-colors">材质大全</Link></li>
+431:            <li><Link to="/mall" className="hover:text-wenwan-gold transition-colors">官方商城</Link></li>
+432:            <li><Link to="/maintenance" className="hover:text-wenwan-gold transition-colors">养护指南</Link></li>
+438:          <h4 className="text-lg font-bold tracking-widest text-white">客户服务</h4>
+439:          <ul className="space-y-4 text-sm text-wenwan-paper/60 font-serif">
+440:            <li><Link to="/support" className="hover:text-wenwan-gold transition-colors">关于我们</Link></li>
+441:            <li><Link to="/support" className="hover:text-wenwan-gold transition-colors">售后保障</Link></li>
+442:            <li><Link to="/support" className="hover:text-wenwan-gold transition-colors">常见问题</Link></li>
+443:            <li><Link to="/support" className="hover:text-wenwan-gold transition-colors">联系我们</Link></li>
+449:          <h4 className="text-lg font-bold tracking-widest text-white">联系方式</h4>
+450:          <ul className="space-y-4 text-sm text-wenwan-paper/60 font-serif">
+452:              <span className="text-wenwan-gold">微信：</span>
+453:              <span className="select-all text-white font-medium">orange_nomore</span>
+456:              <span className="text-wenwan-gold">电话：</span>
+460:              <span className="text-wenwan-gold">邮箱：</span>
+464:              <span className="text-wenwan-gold whitespace-nowrap">地址：</span>
+471:      <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-wenwan-paper/40 tracking-widest font-serif">
+474:          <Link to="/support" className="hover:text-wenwan-gold transition-colors">隐私政策</Link>
+475:          <Link to="/support" className="hover:text-wenwan-gold transition-colors">服务条款</Link>
+476:          <Link to="/support" className="hover:text-wenwan-gold transition-colors">营业执照</Link>
+489:        <div className="text-center space-y-6">
+490:          <h2 className="text-5xl font-bold font-serif text-[#3D3229]">{section.title} · 珍品大赏</h2>
+491:          <p className="text-wenwan-gold tracking-[0.4em] font-bold">左图右文，细细品味每一处细节</p>
+515:              <p className="text-[#3D3229]/60 leading-loose">
+518:              <Link to={section.link} className="inline-block text-wenwan-gold font-bold tracking-widest border-b border-wenwan-gold pb-1 hover:text-wenwan-ink hover:border-wenwan-ink transition-colors">
+536:        <div className="text-center space-y-6">
+537:          <h2 className="text-5xl font-bold font-serif text-[#3D3229]">{section.title} · 探寻自然</h2>
+538:          <p className="text-wenwan-gold tracking-[0.4em] font-bold">{section.detailTitle}</p>
+539:          <p className="max-w-3xl mx-auto text-[#3D3229]/70 leading-loose font-serif text-lg">
+553:              className="bg-white p-10 rounded-sm shadow-xl text-center space-y-6 group hover:-translate-y-2 transition-transform duration-500"
+555:              <div className="w-20 h-20 mx-auto bg-wenwan-gold/10 rounded-full flex items-center justify-center text-wenwan-gold group-hover:scale-110 transition-transform duration-500">
+558:              <h3 className="text-2xl font-bold font-serif text-[#3D3229]">{feature.title}</h3>
+559:              <p className="text-[#3D3229]/70 leading-relaxed">{feature.desc}</p>
+560:              <Link to={feature.link} className="inline-block text-wenwan-gold font-bold tracking-widest border-b border-wenwan-gold pb-1 hover:text-wenwan-ink hover:border-wenwan-ink transition-colors">
+569:          <div className="text-center space-y-4">
+570:            <h3 className="text-4xl font-bold font-serif text-[#3D3229]">精选{section.title}</h3>
+592:                    <Link to="/products" className="bg-white/90 text-wenwan-ink px-6 py-2 rounded-sm font-bold tracking-widest hover:bg-wenwan-gold hover:text-white transition-colors btn-neumorphic">
+599:                    <h4 className="text-xl font-bold font-serif text-[#3D3229]">{product.title}</h4>
+600:                    <span className="text-wenwan-gold font-bold">{product.price}</span>
+602:                  <p className="text-[#3D3229]/60 text-sm leading-relaxed">{product.desc}</p>
+605:                      <span key={i} className="text-xs text-wenwan-gray bg-gray-50 px-2 py-1 rounded-sm">
+628:          className="text-center space-y-8"
+630:          <h2 className="text-6xl font-bold font-serif text-[#3D3229]">{section.title}</h2>
+631:          <p className="text-2xl text-wenwan-gold font-serif italic">"千锤百炼，方得始终"</p>
+634:        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 text-[#3D3229]/80 leading-loose font-serif text-lg">
+641:            <p className="first-letter:text-7xl first-letter:font-bold first-letter:text-wenwan-gold first-letter:mr-3 first-letter:float-left">
+674:              <div className="flex-1 w-full text-center md:text-left" style={{ textAlign: idx % 2 === 0 ? 'left' : 'right' }}>
+675:                <h3 className="text-2xl font-bold font-serif text-[#3D3229] mb-4">{feature.title}</h3>
+676:                <p className="text-[#3D3229]/60">{feature.desc}</p>
+678:              <div className="w-16 h-16 rounded-full bg-wenwan-ink text-wenwan-gold flex items-center justify-center z-10 shadow-lg shrink-0">
+697:        <div className="text-center space-y-6 mb-24">
+698:          <h2 className="text-5xl font-bold font-serif text-[#3D3229]">{section.title} · 专属体验</h2>
+699:          <p className="text-wenwan-gold tracking-[0.4em] font-bold">功能展示：打造独一无二的专属雅物</p>
+711:                  className={`flex flex-col items-center gap-4 cursor-pointer ${activeStep === idx ? 'text-wenwan-gold' : 'text-gray-400'}`}
+713:                  <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold bg-white border-2 transition-colors ${activeStep === idx ? 'border-wenwan-gold text-wenwan-gold' : 'border-gray-200'}`}>
+716:                  <span className="text-sm font-bold tracking-widest hidden sm:block">{step}</span>
+727:                className="min-h-[300px] flex flex-col items-center justify-center text-center space-y-8"
+729:                <div className="w-32 h-32 rounded-full bg-[#F9F6F0] flex items-center justify-center text-wenwan-gold">
+733:                  <h3 className="text-2xl font-bold font-serif text-[#3D3229] mb-4">
+736:                  <p className="text-[#3D3229]/60 max-w-md mx-auto">
+742:                  className="bg-wenwan-ink text-white px-12 py-4 rounded-sm hover:bg-wenwan-gold transition-colors tracking-widest btn-neumorphic-dark"
+751:          <div className="w-full lg:w-[400px] bg-wenwan-ink text-white p-8 rounded-sm shadow-2xl flex flex-col">
+752:            <h3 className="text-2xl font-serif text-wenwan-gold mb-8 border-b border-wenwan-gold/30 pb-4">定制预览</h3>
+759:                <span className="text-wenwan-gold/50 font-serif tracking-widest">实时预览区</span>
+762:            <div className="mt-8 space-y-4 text-sm text-white/70">
+763:              <div className="flex justify-between"><span className="text-white">当前材质:</span> <span>待选择</span></div>
+764:              <div className="flex justify-between"><span className="text-white">当前规格:</span> <span>待选择</span></div>
+765:              <div className="flex justify-between"><span className="text-white">预计工期:</span> <span className="text-wenwan-gold">15-20个工作日</span></div>
+778:        <div className="text-center space-y-6 mb-24">
+779:          <h2 className="text-5xl font-bold font-serif text-[#3D3229]">{section.title}</h2>
+780:          <p className="text-wenwan-gold tracking-[0.4em] font-bold">混合排版：网格优势与折叠问答</p>
+794:              <div className="text-wenwan-gold mb-6">{adv.icon}</div>
+795:              <h3 className={`font-bold font-serif text-[#3D3229] mb-4 ${idx === 0 ? 'text-4xl' : 'text-2xl'}`}>{adv.title}</h3>
+796:              <p className="text-[#3D3229]/70 leading-relaxed">{adv.content}</p>
+803:          <h3 className="text-3xl font-bold font-serif text-center text-[#3D3229] mb-12">常见问题解答</h3>
+806:              <summary className="flex items-center justify-between p-6 cursor-pointer font-bold text-[#3D3229] font-serif">
+808:                <span className="transition group-open:rotate-180 text-wenwan-gold">
+812:              <div className="p-6 pt-0 text-[#3D3229]/70 leading-loose">
+832:          className="flex-1 text-white space-y-12"
+834:          <h2 className="text-6xl font-bold font-serif text-wenwan-gold">{section.title}</h2>
+835:          <p className="text-2xl font-serif italic text-white/80">{section.subtitle}</p>
+836:          <p className="text-white/60 leading-loose max-w-md">
+841:              <div className="text-4xl font-bold text-wenwan-gold mb-2">10W+</div>
+842:              <div className="text-sm text-white/50 tracking-widest">活跃雅友</div>
+845:              <div className="text-4xl font-bold text-wenwan-gold mb-2">500+</div>
+846:              <div className="text-sm text-white/50 tracking-widest">线下雅集</div>
+858:          <div className="text-center mb-10">
+859:            <Flower2 size={48} className="text-wenwan-gold mx-auto mb-4" />
+860:            <h3 className="text-2xl font-bold text-[#3D3229] font-serif">欢迎归来</h3>
+864:              <label className="block text-sm font-bold text-[#3D3229] mb-2 tracking-widest">手机号 / 账号</label>
+868:              <label className="block text-sm font-bold text-[#3D3229] mb-2 tracking-widest">密码</label>
+871:            <div className="flex justify-between text-sm">
+872:              <label className="flex items-center gap-2 text-gray-500 cursor-pointer">
+875:              <a href="#" className="text-wenwan-gold hover:underline">忘记密码？</a>
+877:            <button className="w-full bg-wenwan-ink text-white py-4 rounded-sm font-bold tracking-widest hover:bg-wenwan-gold transition-colors mt-8 btn-neumorphic-dark">
+895:        <h1 className="text-5xl font-serif font-bold text-wenwan-ink mb-16 text-center">雅集商城</h1>
+903:              className="bg-white p-8 rounded-sm shadow-lg border border-wenwan-gold/20 text-center cursor-pointer hover:border-wenwan-gold transition-all"
+905:              <h3 className="text-xl font-serif font-bold text-wenwan-ink">{cat}</h3>
+913:            <p className="text-wenwan-gold/50 font-serif tracking-widest">预留3D模型展示区域</p>
+916:            <h2 className="text-3xl font-serif font-bold text-wenwan-ink border-b border-wenwan-gold/20 pb-4">专属定制</h2>
+918:              <label className="block text-sm font-bold text-wenwan-ink mb-3 tracking-widest">材质选择</label>
+926:              <label className="block text-sm font-bold text-wenwan-ink mb-3 tracking-widest">规格大小</label>
+934:              <label className="block text-sm font-bold text-wenwan-ink mb-3 tracking-widest">配饰样式</label>
+941:            <button className="w-full bg-wenwan-ink text-white py-4 rounded-sm font-bold tracking-[0.3em] hover:bg-wenwan-gold transition-all">立即定制</button>
+996:            <h2 className="text-wenwan-gold font-bold tracking-[0.4em] text-sm uppercase border-b-2 border-wenwan-gold pb-2 inline-block">
+999:            <h3 className="text-5xl font-bold font-serif text-[#3D3229] leading-tight">
+1002:            <p className="text-[#3D3229]/80 text-xl leading-loose font-serif italic">
+1007:              <Link to={section.link} className="text-wenwan-gold font-bold tracking-widest flex items-center group text-lg">
+1022:        className="max-w-7xl mx-auto text-center space-y-6 mb-24"
+1024:        <h2 className="text-5xl font-bold font-serif text-[#3D3229]">{section.title} · 为你提供</h2>
+1025:        <p className="text-wenwan-gold tracking-[0.4em] font-bold">不只是交易，更是知识与审美的同行者</p>
+1035:                className="bg-[#F9F6F0] p-12 rounded-sm border border-wenwan-gold/10 text-center space-y-8 h-full hover:border-wenwan-gold transition-colors"
+1038:                <div className="w-20 h-20 bg-wenwan-ink text-wenwan-gold rounded-full flex items-center justify-center mx-auto shadow-xl">
+1041:                <h3 className="text-2xl font-bold font-serif text-[#3D3229]">{item.title}</h3>
+1042:                <p className="text-[#3D3229]/60 leading-loose font-serif text-sm">{item.desc}</p>
+1043:                <Link to={item.link} className="inline-block text-wenwan-gold font-bold border-b border-wenwan-gold pb-1 hover:text-wenwan-ink hover:border-wenwan-ink transition-colors tracking-widest text-sm">
+1059:        className="max-w-7xl mx-auto text-center space-y-6 mb-24"
+1061:        <h2 className="text-5xl font-bold font-serif text-[#3D3229]">{section.title}之美 · 不止于物</h2>
+1062:        <p className="text-wenwan-gold tracking-[0.4em] font-bold">精选藏品，每一件都值得静观</p>
+1079:        <div className="text-center mt-20">
+1080:          <Link to={section.link} className="bg-wenwan-ink text-wenwan-paper px-16 py-6 rounded-sm font-bold tracking-[0.3em] hover:bg-wenwan-gold hover:text-wenwan-ink transition-all btn-neumorphic-dark">
+1093:        className="max-w-7xl mx-auto text-center space-y-6 mb-24"
+1095:        <h2 className="text-5xl font-bold font-serif text-[#3D3229]">为什么选择{section.title}</h2>
+1096:        <p className="text-wenwan-gold tracking-[0.4em] font-bold">专业、真实、有保障</p>
+1106:              className="p-10 bg-[#F9F6F0] rounded-sm border border-wenwan-gold/5 text-center space-y-6"
+1108:              <div className="text-wenwan-gold flex justify-center">{item.icon}</div>
+1109:              <h4 className="text-xl font-bold font-serif text-[#3D3229]">{item.title}</h4>
+1110:              <p className="text-[#3D3229]/60 text-sm font-serif leading-relaxed">{item.content}</p>
+1118:        <div className="max-w-7xl mx-auto text-center space-y-6 mb-24">
+1119:          <h2 className="text-5xl font-bold font-serif text-[#3D3229]">不止于买 · 更在于传</h2>
+1120:          <p className="text-wenwan-gold tracking-[0.4em] font-bold">养护知识 + 材质科普，让文玩陪伴更长久</p>
+1124:            <div className="flex items-center gap-4 text-wenwan-ink">
+1126:              <h3 className="text-3xl font-bold font-serif">📖 养护指南</h3>
+1131:                  <span className="text-[#3D3229] font-serif group-hover:text-wenwan-gold transition-colors">{text}</span>
+1132:                  <span className="text-wenwan-gold text-sm font-bold tracking-widest">阅读 →</span>
+1136:            <Link to="/maintenance" className="inline-block text-wenwan-gold font-bold tracking-widest border-b border-wenwan-gold pb-1">
+1141:            <div className="flex items-center gap-4 text-wenwan-ink">
+1143:              <h3 className="text-3xl font-bold font-serif">🌳 材质百科</h3>
+1148:                  <div className="font-bold font-serif text-[#3D3229]">{item.name}</div>
+1149:                  <div className="text-wenwan-gold text-xs tracking-widest">{item.tag}</div>
+1153:            <Link to="/categories" className="inline-block text-wenwan-gold font-bold tracking-widest border-b border-wenwan-gold pb-1">
+1161:      <section className="py-40 px-6 bg-white text-center">
+1163:          <h2 className="text-5xl font-bold font-serif text-[#3D3229]">与{section.title}一起，感受岁月之美</h2>
+1164:          <p className="text-wenwan-gold tracking-[0.4em] font-bold uppercase">关注公众号，获取每日文玩知识</p>
+1169:            <p className="text-[#3D3229]/60 font-serif">微信扫一扫，关注{section.title}</p>
+1659:              className="text-[25vw] font-serif font-black text-white whitespace-nowrap select-none"
+1686:              className="w-full max-w-7xl text-center lg:text-left space-y-12"
+1692:                className="inline-block border border-wenwan-gold/40 px-8 py-3 text-wenwan-gold tracking-[0.6em] text-base mb-6 bg-wenwan-gold/5 backdrop-blur-sm"
+1697:              <h1 className="text-6xl md:text-8xl font-bold tracking-[0.2em] font-serif leading-tight text-white drop-shadow-2xl">
+1701:              <p className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto lg:mx-0 font-serif italic leading-relaxed">
+1711:                <Link to={activeSection.link} className="group relative overflow-hidden bg-wenwan-gold text-wenwan-ink px-16 py-6 rounded-sm font-bold transition-all tracking-[0.3em] text-lg btn-neumorphic hover:shadow-[0_0_40px_rgba(212,175,55,0.4)]">
+1723:                  className="bg-transparent border border-white/30 px-16 py-6 rounded-sm font-bold text-white hover:bg-white/10 hover:border-white/60 transition-all tracking-[0.3em] text-lg"
+1738:          <span className="text-[10px] text-white/30 font-serif tracking-[0.5em] uppercase">向下滚动探索</span>
+1792:        <div className="text-center mb-16">
+1796:            className="text-5xl font-bold mb-4 font-serif tracking-widest text-wenwan-ink"
+1804:            className="text-wenwan-gray max-w-2xl mx-auto font-serif"
+1812:          <div className="p-12 bg-wenwan-ink text-white rounded-sm relative overflow-hidden shadow-2xl border border-white/10 group">
+1815:                <span className="text-wenwan-gold font-bold tracking-[0.4em] text-sm uppercase">匠心之作 · 名家品鉴</span>
+1816:                <h2 className="text-4xl font-bold font-serif leading-tight">苏工名家：林海<br />《瑞兽纳福》和田玉雕</h2>
+1817:                <p className="text-white/60 font-serif text-lg leading-loose italic">
+1820:                <button className="group relative overflow-hidden bg-wenwan-gold text-white px-10 py-3 rounded-sm font-bold transition-all tracking-widest btn-neumorphic hover:shadow-[0_0_30px_rgba(212,175,55,0.4)]">
+1851:                  ? "bg-wenwan-gold border-wenwan-gold text-white shadow-[0_0_20px_rgba(212,175,55,0.4)]" 
+1852:                  : "border-wenwan-gray/20 text-wenwan-gray hover:border-wenwan-gold hover:text-wenwan-gold"
+1885:                      <span className="bg-white/90 text-wenwan-ink px-6 py-2 rounded-sm font-serif tracking-widest btn-neumorphic">查看详情</span>
+1890:                      <h3 className="text-xl font-bold font-serif text-wenwan-ink">{product.title}</h3>
+1891:                      <span className="text-wenwan-gold font-bold">{product.price}</span>
+1893:                    <p className="text-wenwan-gray text-sm font-serif line-clamp-2">{product.desc}</p>
+1930:                  className="absolute top-6 right-6 text-wenwan-gray hover:text-wenwan-ink transition-colors"
+1935:                  <span className="text-wenwan-gold font-bold tracking-widest text-sm mb-4 block uppercase">{selectedProduct.category}</span>
+1936:                  <h2 className="text-4xl font-bold mb-6 font-serif text-wenwan-ink">{selectedProduct.title}</h2>
+1937:                  <p className="text-wenwan-gray text-lg mb-8 font-serif leading-relaxed">{selectedProduct.desc}</p>
+1940:                    <h4 className="font-bold text-wenwan-ink font-serif tracking-widest border-b border-wenwan-gold/20 pb-2">参数详情</h4>
+1943:                        <li key={i} className="text-wenwan-gray font-serif text-sm flex items-center gap-2">
+1952:                    <h4 className="font-bold text-wenwan-ink font-serif tracking-widest border-b border-wenwan-gold/20 pb-2">文化内涵</h4>
+1953:                    <p className="text-wenwan-gray font-serif text-sm leading-relaxed italic">
+1959:                    <h4 className="text-wenwan-gold font-bold font-serif text-xs tracking-widest mb-2 uppercase">专家点评</h4>
+1960:                    <p className="text-wenwan-ink font-serif text-sm italic leading-relaxed">
+1966:                  <button className="flex-grow bg-wenwan-gold text-white py-4 rounded-sm font-bold hover:bg-wenwan-gold-dark transition-all tracking-widest btn-neumorphic">
+1969:                  <button className="px-6 border border-wenwan-gold text-wenwan-gold py-4 rounded-sm font-bold hover:bg-wenwan-gold hover:text-white transition-all">
+2052:        <div className="text-center mb-16">
+2056:            className="text-5xl font-bold mb-4 font-serif tracking-widest text-wenwan-ink"
+2064:            className="text-wenwan-gray max-w-2xl mx-auto font-serif"
+2076:                "pb-4 px-4 text-xl font-serif tracking-widest transition-all relative",
+2077:                activeTab === cat.id ? "text-wenwan-gold font-bold" : "text-wenwan-gray hover:text-wenwan-ink"
+2111:                <h2 className="text-4xl font-bold font-serif text-wenwan-ink mb-4">{currentCat.title}</h2>
+2112:                <p className="text-wenwan-gray text-lg font-serif leading-relaxed italic">{currentCat.desc}</p>
+2116:                <h4 className="text-xl font-bold font-serif text-wenwan-ink border-l-4 border-wenwan-gold pl-4">核心品类</h4>
+2127:                        <span className="text-xl font-bold font-serif text-wenwan-ink group-hover:text-wenwan-gold transition-colors">{m.name}</span>
+2128:                        <span className="text-xs bg-wenwan-gold/10 text-wenwan-gold px-3 py-1 rounded-full font-serif">{m.value}</span>
+2130:                      <div className="grid grid-cols-2 gap-4 text-sm font-serif">
+2131:                        <p className="text-wenwan-gray"><span className="text-wenwan-ink font-bold">产地：</span>{m.origin}</p>
+2132:                        <p className="text-wenwan-gray"><span className="text-wenwan-ink font-bold">特征：</span>{m.feature}</p>
+2139:              <button className="group relative overflow-hidden w-full py-4 bg-wenwan-ink text-white rounded-sm font-bold font-serif tracking-[0.5em] transition-all hover:shadow-xl btn-neumorphic-dark">
+2161:          <h3 className="text-3xl font-bold font-serif text-wenwan-ink mb-12 text-center tracking-widest">材质参数对比</h3>
+2165:                <tr className="bg-wenwan-ink text-white">
+2166:                  <th className="p-4 text-left border border-white/10">材质名称</th>
+2167:                  <th className="p-4 text-left border border-white/10">密度 (g/cm³)</th>
+2168:                  <th className="p-4 text-left border border-white/10">油性/光泽</th>
+2169:                  <th className="p-4 text-left border border-white/10">硬度 (莫氏)</th>
+2170:                  <th className="p-4 text-left border border-white/10">核心特征</th>
+2176:                    <td className="p-4 border border-wenwan-paper-dark font-bold text-wenwan-ink">{row.name}</td>
+2177:                    <td className="p-4 border border-wenwan-paper-dark text-wenwan-gray">{row.density}</td>
+2178:                    <td className="p-4 border border-wenwan-paper-dark text-wenwan-gray">{row.oil}</td>
+2179:                    <td className="p-4 border border-wenwan-paper-dark text-wenwan-gray">{row.hardness}</td>
+2180:                    <td className="p-4 border border-wenwan-paper-dark text-wenwan-gray">{row.feature}</td>
+2245:              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-wenwan-gray group-focus-within:text-wenwan-gold transition-colors" size={20} />
+2256:              className="relative p-3 bg-wenwan-ink text-white rounded-full hover:bg-wenwan-gold transition-all shadow-xl hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] btn-neumorphic-dark shrink-0 lg:hidden"
+2263:                  className="absolute -top-1 -right-1 bg-wenwan-red text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold"
+2278:                    "px-6 py-2 rounded-full border transition-all whitespace-nowrap font-serif text-sm snap-start",
+2280:                      ? "bg-wenwan-ink border-wenwan-ink text-white shadow-lg" 
+2281:                      : "border-wenwan-paper-dark text-wenwan-gray hover:border-wenwan-gold hover:text-wenwan-gold"
+2290:              className="relative p-3 bg-wenwan-ink text-white rounded-full hover:bg-wenwan-gold transition-all shadow-xl hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] btn-neumorphic-dark shrink-0 hidden lg:block"
+2297:                  className="absolute -top-1 -right-1 bg-wenwan-red text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold"
+2316:              <span className="text-wenwan-gold font-bold tracking-[0.3em] mb-2 uppercase">春季雅集 · 限时特惠</span>
+2317:              <h2 className="text-4xl font-bold text-white font-serif mb-4">满 ¥2000 赠精美配饰</h2>
+2318:              <button className="bg-white text-wenwan-ink px-8 py-2 rounded-sm font-bold w-fit hover:bg-wenwan-gold hover:text-white transition-all shadow-lg btn-neumorphic">
+2350:                      <span className="absolute top-2 left-2 sm:top-4 sm:left-4 bg-wenwan-red text-white text-[10px] sm:text-xs font-bold px-2 py-0.5 sm:px-3 sm:py-1 rounded-sm shadow-md">特惠</span>
+2353:                      <button className="p-2 sm:p-3 bg-white text-wenwan-ink rounded-full shadow-lg hover:bg-wenwan-gold hover:text-white transition-all btn-neumorphic">
+2358:                        className="p-2 sm:p-3 bg-wenwan-gold text-white rounded-full shadow-lg hover:bg-wenwan-ink transition-all btn-neumorphic"
+2365:                    <span className="text-[10px] sm:text-xs text-wenwan-gray font-serif mb-1 block">{product.category}</span>
+2366:                    <h3 className="text-sm sm:text-xl font-bold font-serif text-wenwan-ink mb-1 sm:mb-3 group-hover:text-wenwan-gold transition-colors truncate">{product.name}</h3>
+2368:                      <span className="text-base sm:text-2xl font-bold text-wenwan-gold">¥{product.price}</span>
+2370:                        <span className="text-[10px] sm:text-sm text-wenwan-gray line-through">¥{product.oldPrice}</span>
+2384:            className="text-center py-32"
+2386:            <p className="text-wenwan-gray font-serif text-xl">未找到相关藏品，换个关键词试试吧</p>
+2409:                <h3 className="text-2xl font-bold font-serif text-wenwan-ink">我的雅集</h3>
+2410:                <button onClick={() => setIsCartOpen(false)} className="text-wenwan-gray hover:text-wenwan-ink">
+2416:                  <div className="h-full flex flex-col items-center justify-center text-wenwan-gray space-y-4">
+2427:                        <h4 className="font-bold font-serif text-wenwan-ink">{item.name}</h4>
+2428:                        <p className="text-wenwan-gold font-bold">¥{item.price} x {item.quantity}</p>
+2430:                      <button onClick={() => removeFromCart(item.id)} className="text-wenwan-red hover:bg-wenwan-red/10 p-2 rounded-full transition-all">
+2440:                    <span className="text-wenwan-gray font-serif">合计金额</span>
+2441:                    <span className="text-3xl font-bold text-wenwan-gold">¥{totalAmount}</span>
+2443:                  <button className="w-full py-4 bg-wenwan-ink text-white rounded-sm font-bold font-serif tracking-[0.5em] hover:bg-wenwan-gold transition-all shadow-xl btn-neumorphic-dark">
+2475:                <button onClick={() => setSelectedProduct(null)} className="self-end text-wenwan-gray hover:text-wenwan-ink mb-8">
+2479:                  <span className="text-wenwan-gold font-bold tracking-widest text-sm uppercase">{selectedProduct.category}</span>
+2480:                  <h2 className="text-4xl font-bold font-serif text-wenwan-ink">{selectedProduct.name}</h2>
+2481:                  <p className="text-wenwan-gray text-lg font-serif leading-relaxed italic">{selectedProduct.desc}</p>
+2482:                  <div className="text-3xl font-bold text-wenwan-gold">¥{selectedProduct.price}</div>
+2486:                  className="w-full py-4 bg-wenwan-ink text-white rounded-sm font-bold font-serif tracking-[0.5em] hover:bg-wenwan-gold transition-all btn-neumorphic-dark"
+2547:        <div className="text-center mb-16">
+2551:            className="text-5xl font-bold mb-4 font-serif tracking-widest text-wenwan-ink"
+2559:            className="text-wenwan-gray max-w-2xl mx-auto font-serif italic"
+2573:                  ? "bg-wenwan-ink border-wenwan-ink text-white shadow-lg" 
+2574:                  : "border-wenwan-paper-dark text-wenwan-gray hover:border-wenwan-gold hover:text-wenwan-gold"
+2594:                  <div className="w-12 h-12 bg-wenwan-gold/10 rounded-full flex items-center justify-center text-wenwan-gold mb-6 group-hover:bg-wenwan-gold group-hover:text-white transition-all">
+2597:                  <h3 className="text-xl font-bold font-serif text-wenwan-ink mb-4 group-hover:text-wenwan-gold transition-colors">{tip.title}</h3>
+2598:                  <p className="text-wenwan-gray font-serif leading-relaxed text-sm italic">{tip.content}</p>
+2606:          <div className="bg-wenwan-ink text-white p-12 rounded-sm relative overflow-hidden shadow-2xl border border-white/10 group">
+2608:              <h2 className="text-3xl font-bold font-serif mb-6 tracking-widest">专家在线咨询</h2>
+2609:              <p className="text-white/60 font-serif mb-8 leading-relaxed">
+2612:              <button className="group relative overflow-hidden bg-wenwan-gold text-white px-10 py-3 rounded-sm font-bold transition-all tracking-widest btn-neumorphic hover:shadow-[0_0_30px_rgba(212,175,55,0.4)]">
+2630:          <h3 className="text-2xl font-bold font-serif text-wenwan-ink mb-8 text-center">养护月历</h3>
+2638:              <div key={i} className="bg-wenwan-gold/5 p-6 rounded-sm border border-wenwan-gold/10 text-center">
+2639:                <h4 className="font-bold font-serif text-wenwan-gold mb-2">{item.month}</h4>
+2640:                <p className="text-wenwan-gray text-xs font-serif">{item.tip}</p>
+2647:          <h3 className="text-2xl font-bold font-serif text-wenwan-ink mb-8 text-center">常见问题 FAQ</h3>
+2655:                <h4 className="font-bold font-serif text-wenwan-ink mb-2 flex items-center gap-2">
+2656:                  <span className="text-wenwan-gold">Q:</span> {faq.q}
+2658:                <p className="text-wenwan-gray text-sm font-serif pl-6 leading-relaxed">
+2659:                  <span className="text-wenwan-ink font-bold">A:</span> {faq.a}
+2690:              <h2 className="text-wenwan-gold font-bold tracking-[0.4em] text-sm uppercase border-b-2 border-wenwan-gold pb-2 inline-block">
+2693:              <h3 className="text-5xl font-bold font-serif text-wenwan-ink leading-tight">
+2696:              <div className="space-y-6 text-wenwan-gray text-lg font-serif leading-loose italic">
+2722:              <div className="absolute -bottom-8 -left-8 bg-wenwan-ink text-white p-10 rounded-sm shadow-2xl hidden md:block">
+2723:                <p className="text-3xl font-bold font-serif mb-2">2018</p>
+2724:                <p className="text-wenwan-gold font-serif tracking-widest text-sm">品牌创立于北京</p>
+2730:        <div className="text-center mb-20">
+2731:          <h1 className="text-5xl font-bold mb-4 font-serif tracking-widest text-wenwan-ink">售后服务</h1>
+2732:          <p className="text-wenwan-gray max-w-2xl mx-auto font-serif">全方位的售后保障，为您解决后顾之忧</p>
+2743:              className="bg-white p-10 rounded-sm border border-wenwan-paper-dark text-center space-y-6 hover:shadow-xl transition-all"
+2745:              <div className="text-wenwan-gold flex justify-center">{g.icon}</div>
+2746:              <h3 className="text-2xl font-bold font-serif text-wenwan-ink">{g.title}</h3>
+2747:              <p className="text-wenwan-gray font-serif text-sm leading-relaxed">{g.desc}</p>
+2754:            <h2 className="text-3xl font-bold font-serif text-wenwan-ink tracking-widest border-b border-wenwan-gold/20 pb-4">服务流程</h2>
+2763:                  <span className="text-4xl font-bold text-wenwan-gold/20 font-serif">{item.step}</span>
+2765:                    <h4 className="text-xl font-bold font-serif text-wenwan-ink mb-2">{item.title}</h4>
+2766:                    <p className="text-wenwan-gray font-serif text-sm">{item.desc}</p>
+2774:              <h4 className="text-wenwan-gold font-bold font-serif text-sm tracking-widest mb-4 uppercase">服务进度查询</h4>
+2779:                  className="flex-grow px-4 py-2 rounded-sm border border-wenwan-paper-dark focus:border-wenwan-gold outline-none font-serif text-sm"
+2781:                <button className="bg-wenwan-ink text-white px-6 py-2 rounded-sm font-bold font-serif text-sm hover:bg-wenwan-gold transition-all btn-neumorphic-dark">
+2789:            <h2 className="text-3xl font-bold font-serif text-wenwan-ink tracking-widest border-b border-wenwan-gold/20 pb-4">品牌理念</h2>
+2797:                  <h4 className="text-xl font-bold font-serif text-wenwan-ink mb-4">{item.title}</h4>
+2798:                  <p className="text-wenwan-gray font-serif text-sm leading-relaxed">{item.desc}</p>
+2812:            <h2 className="text-2xl font-bold font-serif text-wenwan-ink mb-8">在线报修/咨询</h2>
+2816:                  <label className="text-sm font-serif text-wenwan-gray">姓名</label>
+2820:                  <label className="text-sm font-serif text-wenwan-gray">联系电话</label>
+2825:                <label className="text-sm font-serif text-wenwan-gray">服务类型</label>
+2834:                <label className="text-sm font-serif text-wenwan-gray">问题描述</label>
+2837:              <button className="w-full py-4 bg-wenwan-ink text-white rounded-sm font-bold font-serif tracking-widest hover:bg-wenwan-gold transition-all btn-neumorphic-dark">
+2845:            <div className="w-16 h-16 bg-wenwan-gold rounded-full flex items-center justify-center text-white">
+2849:              <h3 className="text-xl font-bold font-serif text-wenwan-ink">24小时雅友热线</h3>
+2850:              <p className="text-wenwan-gold font-bold text-2xl">400-888-9999</p>
+2854:            <button className="px-8 py-3 bg-wenwan-ink text-white rounded-sm font-bold font-serif hover:bg-wenwan-gold transition-all btn-neumorphic-dark">在线客服</button>
+2855:            <button className="px-8 py-3 border border-wenwan-ink text-wenwan-ink rounded-sm font-bold font-serif hover:bg-wenwan-ink hover:text-white transition-all btn-neumorphic">常见问题</button>
+2886:          <span className="text-white font-serif tracking-[0.4em] text-lg">文玩馆</span>
+2895:            className="text-white font-serif text-5xl md:text-6xl tracking-[1em] leading-relaxed [writing-mode:vertical-rl]"
+2908:            <p className="text-gray-400 text-sm tracking-widest">
+2911:            <h2 className="text-3xl font-bold text-wenwan-ink font-serif tracking-widest">
+2920:              className={`pb-4 text-sm font-bold tracking-widest transition-colors relative ${activeTab === 'login' ? 'text-wenwan-ink' : 'text-gray-400'}`}
+2929:              className={`pb-4 text-sm font-bold tracking-widest transition-colors relative ${activeTab === 'register' ? 'text-wenwan-ink' : 'text-gray-400'}`}
+2952:                    className="w-full h-12 px-4 rounded-lg border border-gray-200 focus:border-wenwan-gold focus:ring-1 focus:ring-wenwan-gold outline-none transition-all text-sm"
+2959:                    className="w-full h-12 px-4 rounded-lg border border-gray-200 focus:border-wenwan-gold focus:ring-1 focus:ring-wenwan-gold outline-none transition-all text-sm"
+2964:                    className="absolute right-4 top-3 text-gray-400 hover:text-wenwan-gold transition-colors"
+2969:                    <a href="#" className="text-xs text-wenwan-gold hover:underline tracking-widest">忘记密码？</a>
+2975:                  <label htmlFor="remember" className="text-xs text-gray-500 tracking-widest">记住账号</label>
+2978:                <button className="w-full h-12 bg-wenwan-gold text-white rounded-[40px] font-bold tracking-[0.4em] hover:bg-wenwan-gold/90 transition-all shadow-lg shadow-wenwan-gold/20 btn-neumorphic">
+2985:                    <span className="text-[10px] text-gray-300 tracking-[0.3em] uppercase">社交账号登录</span>
+2989:                    <button type="button" className="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center text-gray-400 hover:text-[#07C160] hover:border-[#07C160] transition-all">
+2992:                    <button type="button" className="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center text-gray-400 hover:text-[#12B7F5] hover:border-[#12B7F5] transition-all">
+3010:                    className="flex-1 h-12 px-4 rounded-lg border border-gray-200 focus:border-wenwan-gold focus:ring-1 focus:ring-wenwan-gold outline-none transition-all text-sm"
+3012:                  <button type="button" className="px-4 h-12 border border-wenwan-gold text-wenwan-gold rounded-lg text-xs font-bold tracking-widest hover:bg-wenwan-gold/5 transition-all">
+3019:                  className="w-full h-12 px-4 rounded-lg border border-gray-200 focus:border-wenwan-gold focus:ring-1 focus:ring-wenwan-gold outline-none transition-all text-sm"
+3024:                  className="w-full h-12 px-4 rounded-lg border border-gray-200 focus:border-wenwan-gold focus:ring-1 focus:ring-wenwan-gold outline-none transition-all text-sm"
+3029:                  className="w-full h-12 px-4 rounded-lg border border-gray-200 focus:border-wenwan-gold focus:ring-1 focus:ring-wenwan-gold outline-none transition-all text-sm"
+3034:                  <label htmlFor="agree" className="text-[11px] text-gray-400 leading-relaxed tracking-wider">
+3035:                    我已阅读并同意 <a href="#" className="text-wenwan-gold">《用户协议》</a> 与 <a href="#" className="text-wenwan-gold">《隐私政策》</a>
+3039:                <button className="w-full h-12 bg-wenwan-gold text-white rounded-[40px] font-bold tracking-[0.4em] hover:bg-wenwan-gold/90 transition-all shadow-lg shadow-wenwan-gold/20 btn-neumorphic">
+3047:          <div className="pt-10 text-center">
+3048:            <a href="#" className="text-xs text-gray-400 hover:text-wenwan-gold transition-colors tracking-widest">
+3076:          <span className="text-[12rem] font-serif font-bold text-wenwan-ink/5 select-none tracking-tighter">404</span>
+3080:        <svg className="absolute inset-0 w-full h-full text-wenwan-gold/40" viewBox="0 0 400 250">
+3122:        className="text-center z-10"
+3124:        <h2 className="text-3xl font-serif font-bold text-wenwan-ink mb-4 tracking-[0.2em]">寻物未果 · 缘分未到</h2>
+3125:        <p className="text-wenwan-gray font-serif mb-10 max-w-md mx-auto leading-loose">
+3128:        <Link to="/" className="inline-block bg-wenwan-ink text-white px-12 py-4 rounded-sm font-bold tracking-[0.3em] hover:bg-wenwan-gold transition-all btn-neumorphic-dark">
+3142:      <div className="min-h-screen bg-wenwan-paper font-sans selection:bg-wenwan-red selection:text-white flex flex-col overflow-x-hidden">
